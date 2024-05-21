@@ -18,12 +18,8 @@ fn main() {
     );
 
     let bindings = Builder::default()
-        .header(
-            cimgui_include_path
-                .join("cimgui.h")
-                .to_str()
-                .expect("Could not convert cimgui.h path to string"),
-        )
+        .clang_arg("-DCIMGUI_DEFINE_ENUMS_AND_STRUCTS=1")
+        .clang_arg(format!("-I{}", cimgui_include_path.display()))
         .header(
             sys_crate_path
                 .join("third-party")
@@ -33,22 +29,31 @@ fn main() {
                 .expect("Could not turn cimplot.h path into string"),
         )
         .parse_callbacks(Box::new(CargoCallbacks))
-        .clang_arg("-DCIMGUI_DEFINE_ENUMS_AND_STRUCTS=1")
         // Reuse the imgui types that implot requires from imgui_sys so we don't define
         // our own new types.
-        .raw_line("pub use imgui_sys::{ImVec2, ImVec4, ImGuiCond, ImTextureID};")
-        .raw_line("pub use imgui_sys::{ImGuiContext, ImGuiKeyModFlags, ImDrawList};")
-        .raw_line("pub use imgui_sys::{ImGuiMouseButton, ImGuiDragDropFlags};")
+        .raw_line("pub use imgui_sys::*;")
         .whitelist_recursively(false)
         .whitelist_function("ImPlot.*")
         .whitelist_type("ImPlot.*")
         // We do want to create bindings for the scalar typedefs
         .whitelist_type("Im[U|S][0-9]{1,2}")
+        .whitelist_type("ImVector_.*")
+        .whitelist_type("ImAxis")
+        .whitelist_type("ImPool_.*")
         // Remove some functions that would take a variable-argument list
         .blacklist_function("ImPlot_AnnotateVVec4")
         .blacklist_function("ImPlot_AnnotateVStr")
         .blacklist_function("ImPlot_AnnotateClampedVVec4")
         .blacklist_function("ImPlot_AnnotateClampedVStr")
+        .blacklist_function("ImPlot_AnnotationV")
+        .blacklist_function("ImPlot_TagXV")
+        .blacklist_function("ImPlot_TagYV")
+        .blacklist_function("ImPlotAnnotationCollection_AppendV")
+        .blacklist_function("ImPlotTagCollection_AppendV")
+        // See https://github.com/rust-lang/rust-bindgen/issues/1188
+        .blacklist_type("time_t")
+        .raw_line("pub type time_t = libc::time_t;")
+        .raw_line("pub type tm = libc::tm;")
         .generate()
         .expect("Unable to generate bindings");
 
