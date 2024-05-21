@@ -12,7 +12,8 @@ build = "build.rs"
 links = "implot"
 
 [dependencies]
-imgui-sys = "0.9.0"
+imgui-sys = { version="0.12.0", features = [ "docking" ] }
+libc = "*"
 
 [build-dependencies]
 cc = "1.0"
