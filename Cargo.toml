@@ -19,7 +19,7 @@ rustversion = "1.0.4"
 
 
 [workspace]
-members = [
+members = [ "examples/simple",
     "implot-sys",
 ]
 exclude = [
