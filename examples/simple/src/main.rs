@@ -19,8 +19,8 @@ use imgui_winit_support::{
     WinitPlatform,
 };
 use implot::{
-    ImPlot_BeginPlot, ImPlot_CreateContext, ImPlot_DestroyContext, ImPlot_EndPlot,
-    ImPlot_GetCurrentContext, ImPlot_PlotLine_FloatPtrInt, ImPlot_SetCurrentContext, ImVec2,
+    sys::{ImPlot_BeginPlot, ImPlot_EndPlot, ImPlot_PlotLine_FloatPtrInt},
+    ImVec2,
 };
 use raw_window_handle::HasRawWindowHandle;
 
@@ -81,11 +81,6 @@ fn create_window<T: Into<String>>(
     (event_loop, window, display)
 }
 
-fn no_current_context() -> bool {
-    let ctx = unsafe { ImPlot_GetCurrentContext() };
-    ctx.is_null()
-}
-
 fn imgui_init(
     window: &imgui_winit_support::winit::window::Window,
 ) -> (WinitPlatform, imgui::Context) {
@@ -109,12 +104,7 @@ fn main() {
     let (event_loop, window, display) = create_window("Hello ImPlot!");
     let (mut winit_platform, mut imgui_context) = imgui_init(&window);
 
-    assert!(no_current_context());
-    let implot_context = unsafe { ImPlot_CreateContext() };
-    unsafe {
-        ImPlot_SetCurrentContext(implot_context);
-    }
-    assert!(!no_current_context());
+    let _plot = implot::Context::create();
 
     let mut renderer = imgui_glium_renderer::Renderer::init(&mut imgui_context, &display).unwrap();
 
@@ -188,8 +178,4 @@ fn main() {
             event => winit_platform.handle_event(imgui_context.io_mut(), &window, &event),
         })
         .unwrap();
-
-    unsafe {
-        ImPlot_DestroyContext(implot_context);
-    }
 }
