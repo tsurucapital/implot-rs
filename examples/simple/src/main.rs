@@ -3,7 +3,7 @@ use std::{ffi::CString, mem::size_of, num::NonZeroU32};
 use glium::{
     glutin::{
         config::ConfigTemplateBuilder,
-        context::{ContextApi, ContextAttributesBuilder, NotCurrentGlContext},
+        context::{ContextApi, ContextAttributesBuilder, NotCurrentContext, NotCurrentGlContext},
         display::{GetGlDisplay, GlDisplay},
         surface::{SurfaceAttributesBuilder, WindowSurface},
     },
@@ -45,16 +45,20 @@ fn create_window<T: Into<String>>(
         .unwrap();
     let window = window.unwrap();
 
-    let context_attribs = ContextAttributesBuilder::new()
-        .with_context_api(ContextApi::Gles(None))
-        .with_profile(glium::glutin::context::GlProfile::Core)
-        .build(Some(window.raw_window_handle()));
+    let mut context: Option<NotCurrentContext> = None;
+    for api in [ContextApi::OpenGl(None), ContextApi::Gles(None)].iter() {
+        if context.is_some() {
+            break;
+        }
 
-    let context = unsafe {
-        cfg.display()
-            .create_context(&cfg, &context_attribs)
-            .unwrap()
-    };
+        let context_attribs = ContextAttributesBuilder::new()
+            .with_context_api(*api)
+            .with_profile(glium::glutin::context::GlProfile::Core)
+            .build(Some(window.raw_window_handle()));
+
+        context = unsafe { cfg.display().create_context(&cfg, &context_attribs).ok() };
+    }
+    let context = context.unwrap();
 
     let surface_attribs = SurfaceAttributesBuilder::<WindowSurface>::new().build(
         window.raw_window_handle(),
