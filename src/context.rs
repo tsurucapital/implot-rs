@@ -4,11 +4,7 @@
 
 use parking_lot::ReentrantMutex;
 
-use crate::sys;
-
-pub struct PlotUi<'ui> {
-    context: &'ui Context,
-}
+use crate::{sys, PlotUi};
 
 /// An implot context.
 ///
