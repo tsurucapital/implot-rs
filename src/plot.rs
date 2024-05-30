@@ -6,7 +6,6 @@
 #![allow(clippy::bad_bit_mask)]
 
 use crate::{AxisChoice, Context, PlotLegendFlags, PlotLocation, PlotUi, NUMBER_OF_AXES};
-use bitflags::bitflags;
 pub use imgui::Condition;
 use implot_sys::{self as sys, ImAxis, ImPlotFlags, ImPlotLocation};
 use std::ffi::CString;
@@ -17,80 +16,8 @@ pub use sys::{ImPlotRange, ImVec2};
 const DEFAULT_PLOT_SIZE_X: f32 = 400.0;
 const DEFAULT_PLOT_SIZE_Y: f32 = 400.0;
 
-// #[rustversion::attr(since(1.48), doc(alias = "ImPlotFlags"))]
-bitflags! {
-    /// Flags for customizing plot behavior and interaction. Documentation copied from implot.h for
-    /// convenience. ImPlot itself also has a "CanvasOnly" flag, which can be emulated here with
-    /// the combination of `NO_LEGEND`, `NO_MENUS`, `NO_BOX_SELECT` and `NO_MOUSE_POSITION`.
-    #[repr(transparent)]
-    pub struct PlotFlags: u32 {
-        /// "Default" according to original docs
-        const NONE = sys::ImPlotFlags__ImPlotFlags_None;
-        /// The plot title will not be displayed
-        const NO_TITLE = sys::ImPlotFlags__ImPlotFlags_NoTitle;
-        /// Plot items will not be highlighted when their legend entry is hovered
-        const NO_LEGEND = sys::ImPlotFlags__ImPlotFlags_NoLegend;
-        /// The mouse position, in plot coordinates, will not be displayed
-        const NO_MOUSE_TEXT = sys::ImPlotFlags__ImPlotFlags_NoMouseText;
-        /// The user will not be able to interact with the plot
-        const NO_INPUTS = sys::ImPlotFlags__ImPlotFlags_NoInputs;
-        /// The user will not be able to open context menus with double-right click
-        const NO_MENUS = sys::ImPlotFlags__ImPlotFlags_NoMenus;
-        /// The user will not be able to box-select with right-mouse
-        const NO_BOX_SELECT = sys::ImPlotFlags__ImPlotFlags_NoBoxSelect;
-        /// the ImGui frame will not be rendered
-        const NO_FRAME = sys::ImPlotFlags__ImPlotFlags_NoFrame;
-        /// Use an aspect ratio of 1:1 for the plot
-        const AXIS_EQUAL = sys::ImPlotFlags__ImPlotFlags_Equal;
-        /// The default mouse cursor will be replaced with a crosshair when hovered
-        const CROSSHAIRS = sys::ImPlotFlags__ImPlotFlags_Crosshairs;
-        const CANVAS_ONLY = sys::ImPlotFlags__ImPlotFlags_CanvasOnly;
-    }
-}
-
-// #[rustversion::attr(since(1.48), doc(alias = "ImPlotAxisFlags"))]
-bitflags! {
-    /// Axis flags. Documentation copied from implot.h for convenience. ImPlot itself also
-    /// has `Lock`, which combines `LOCK_MIN` and `LOCK_MAX`, and `NoDecorations`, which combines
-    /// `NO_GRID_LINES`, `NO_TICK_MARKS` and `NO_TICK_LABELS`.
-    #[repr(transparent)]
-    pub struct AxisFlags: u32 {
-        /// "Default" according to original docs
-        const NONE = sys::ImPlotAxisFlags__ImPlotAxisFlags_None;
-        /// The axis label will not be displayed (axis labels are also hidden if the supplied string name is nullptr)
-        const NO_LABEL = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoLabel;
-        /// Grid lines will not be displayed
-        const NO_GRID_LINES = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoGridLines;
-        /// Tick marks will not be displayed
-        const NO_TICK_MARKS = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoTickMarks;
-        /// Text labels will not be displayed
-        const NO_TICK_LABELS = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoTickLabels;
-        /// Axis will not be initially fit to data extents on the first rendered frame
-        const NO_INITIAL_FIT = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoInitialFit;
-        /// The user will not be able to open context menus with right-click
-        const NO_MENUS = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoMenus;
-        /// The user will not be able to switch the axis side by dragging it
-        const NO_SIDE_SWITCH = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoSideSwitch;
-        /// The axis will not have its background highlighted when hovered or held
-        const NO_HIGHLIGHT = sys::ImPlotAxisFlags__ImPlotAxisFlags_NoHighlight;
-        /// Axis ticks and labels will be rendered on the conventionally opposite side (i.e, right or top)
-        const OPPOSITE = sys::ImPlotAxisFlags__ImPlotAxisFlags_Opposite;
-        /// Grid lines will be displayed in the foreground (i.e. on top of data) instead of the background
-        const FOREGROUND = sys::ImPlotAxisFlags__ImPlotAxisFlags_Foreground;
-        /// The axis will be inverted
-        const INVERT = sys::ImPlotAxisFlags__ImPlotAxisFlags_Invert;
-        /// Axis will be auto-fitting to data extents
-        const AUTO_FIT = sys::ImPlotAxisFlags__ImPlotAxisFlags_AutoFit;
-        /// Axis will only fit points if the point is in the visible range of the **orthogonal** axis
-        const RANGE_FIT = sys::ImPlotAxisFlags__ImPlotAxisFlags_RangeFit;
-        /// Panning in a locked or constrained state will cause the axis to stretch if possible
-        const PAN_STRETCH = sys::ImPlotAxisFlags__ImPlotAxisFlags_PanStretch;
-        /// The axis minimum value will be locked when panning/zooming
-        const LOCK_MIN = sys::ImPlotAxisFlags__ImPlotAxisFlags_LockMin;
-        /// The axis maximum value will be locked when panning/zooming
-        const LOCK_MAX = sys::ImPlotAxisFlags__ImPlotAxisFlags_LockMax;
-    }
-}
+pub type PlotFlags = sys::ImPlotFlags_;
+pub type AxisFlags = sys::ImPlotAxisFlags_;
 
 /// Internally-used struct for storing axis limits
 #[derive(Clone)]
@@ -183,8 +110,8 @@ impl Plot {
             axis_tick_labels: [TICK_NONE; NUMBER_OF_AXES],
             show_axis_default_ticks: [false; NUMBER_OF_AXES],
             legend_configuration: None,
-            plot_flags: PlotFlags::NONE.bits() as sys::ImPlotFlags,
-            axis_flags: [AxisFlags::NONE.bits() as sys::ImPlotAxisFlags; NUMBER_OF_AXES],
+            plot_flags: PlotFlags::NONE.0 as sys::ImPlotFlags,
+            axis_flags: [AxisFlags::NONE.0 as sys::ImPlotAxisFlags; NUMBER_OF_AXES],
         }
     }
 
@@ -391,7 +318,7 @@ impl Plot {
     /// Set the plot flags, see the help for `PlotFlags` for what the available flags are
     #[inline]
     pub fn with_plot_flags(mut self, flags: &PlotFlags) -> Self {
-        self.plot_flags = flags.bits() as sys::ImPlotFlags;
+        self.plot_flags = flags.0 as sys::ImPlotFlags;
         self
     }
 
@@ -411,7 +338,7 @@ impl Plot {
     #[inline]
     pub fn with_axis_flags(mut self, axis_choice: AxisChoice, flags: &AxisFlags) -> Self {
         let axis_index = axis_choice as usize;
-        self.axis_flags[axis_index] = flags.bits() as sys::ImPlotAxisFlags;
+        self.axis_flags[axis_index] = flags.0 as sys::ImPlotAxisFlags;
         self
     }
 
@@ -543,7 +470,7 @@ impl Plot {
                 let location: PlotLocation = legend_config.0;
                 let flags: PlotLegendFlags = legend_config.1;
                 unsafe {
-                    sys::ImPlot_SetupLegend(location as ImPlotLocation, flags as ImPlotFlags);
+                    sys::ImPlot_SetupLegend(location as ImPlotLocation, flags.0 as ImPlotFlags);
                 }
             }
 

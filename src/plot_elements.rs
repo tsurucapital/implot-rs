@@ -7,7 +7,6 @@
 #![allow(clippy::bad_bit_mask)]
 
 use crate::sys;
-use bitflags::bitflags;
 use std::ffi::CString;
 use std::os::raw::c_char;
 
@@ -21,23 +20,7 @@ pub struct PlotLine {
     flags: PlotLineFlags,
 }
 
-bitflags! {
-    #[repr(transparent)]
-    pub struct PlotLineFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotLineFlags__ImPlotLineFlags_None;
-        /// A line segment will be rendered from every two consecutive points
-        const SEGMENTS = sys::ImPlotLineFlags__ImPlotLineFlags_Segments;
-        /// The last and first point will be connected to form a closed loop
-        const LOOP = sys::ImPlotLineFlags__ImPlotLineFlags_Loop;
-        /// NaNs values will be skipped instead of rendered as missing data
-        const SKIP_NAN = sys::ImPlotLineFlags__ImPlotLineFlags_SkipNaN;
-        /// Markers (if displayed) on the edge of a plot will not be clipped
-        const NO_CLIP = sys::ImPlotLineFlags__ImPlotLineFlags_NoClip;
-        /// A filled region between the line and horizontal origin will be rendered; use PlotShaded for more advanced cases
-        const SHADED = sys::ImPlotLineFlags__ImPlotLineFlags_Shaded;
-    }
-}
+pub type PlotLineFlags = sys::ImPlotLineFlags_;
 
 impl PlotLine {
     /// Create a new line to be plotted. Does not draw anything yet.
@@ -69,7 +52,7 @@ impl PlotLine {
                 x.as_ptr(),
                 y.as_ptr(),
                 x.len().min(y.len()) as i32, // "as" casts saturate as of Rust 1.45. This is safe here.
-                self.flags.bits() as sys::ImPlotLineFlags,
+                self.flags.0 as sys::ImPlotLineFlags,
                 0,                                 // No offset
                 std::mem::size_of::<f64>() as i32, // Stride, set to one f64 for the standard use case
             );
@@ -84,17 +67,7 @@ pub struct PlotStairs {
     flags: PlotStairsFlags,
 }
 
-bitflags! {
-    #[repr(transparent)]
-    pub struct PlotStairsFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotStairsFlags__ImPlotStairsFlags_None;
-        /// The y value is continued constantly to the left from every x position, i.e. the interval (x[i-1], x[i]] has the value y[i]
-        const PRE_STEP = sys::ImPlotStairsFlags__ImPlotStairsFlags_PreStep;
-        /// A filled region between the stairs and horizontal origin will be rendered; use PlotShaded for more advanced cases
-        const SHADED = sys::ImPlotStairsFlags__ImPlotStairsFlags_Shaded;
-    }
-}
+pub type PlotStairsFlags = sys::ImPlotStairsFlags_;
 
 impl PlotStairs {
     /// Create a new line to be plotted. Does not draw anything yet.
@@ -127,7 +100,7 @@ impl PlotStairs {
                 x.as_ptr(),
                 y.as_ptr(),
                 x.len().min(y.len()) as i32, // "as" casts saturate as of Rust 1.45. This is safe here.
-                self.flags.bits() as sys::ImPlotStairsFlags,
+                self.flags.0 as sys::ImPlotStairsFlags,
                 0,                                 // No offset
                 std::mem::size_of::<f64>() as i32, // Stride, set to one f64 for the standard use case
             );
@@ -145,14 +118,7 @@ pub struct PlotScatter {
     flags: PlotScatterFlags,
 }
 
-bitflags! {
-    #[repr(transparent)]
-    pub struct PlotScatterFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotScatterFlags__ImPlotScatterFlags_None;
-        const NO_CLIP = sys::ImPlotScatterFlags__ImPlotScatterFlags_NoClip;
-    }
-}
+pub type PlotScatterFlags = sys::ImPlotScatterFlags_;
 
 impl PlotScatter {
     /// Create a new scatter plot to be shown. Does not draw anything yet.
@@ -182,7 +148,7 @@ impl PlotScatter {
                 x.as_ptr(),
                 y.as_ptr(),
                 x.len().min(y.len()) as i32, // "as" casts saturate as of Rust 1.45. This is safe here.
-                self.flags.bits() as sys::ImPlotScatterFlags,
+                self.flags.0 as sys::ImPlotScatterFlags,
                 0,                                 // No offset
                 std::mem::size_of::<f64>() as i32, // Stride, set to one f64 for the standard use case
             );
@@ -199,15 +165,7 @@ pub struct PlotBars {
     bar_width: f64,
 }
 
-bitflags! {
-    #[repr(transparent)]
-    struct PlotBarsFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotBarsFlags__ImPlotBarsFlags_None;
-        /// Bars will be rendered horizontally on the current y-axis
-        const HORIZONTAL = sys::ImPlotBarsFlags__ImPlotBarsFlags_Horizontal;
-    }
-}
+pub type PlotBarsFlags = sys::ImPlotBarGroupsFlags_;
 
 impl PlotBars {
     /// Create a new bar plot to be shown. Defaults to drawing vertical bars.
@@ -253,7 +211,7 @@ impl PlotBars {
                 bar_values.as_ptr(),
                 number_of_points as i32, // "as" casts saturate as of Rust 1.45. This is safe here.
                 self.bar_width,
-                flags.bits() as sys::ImPlotBarsFlags,
+                flags.0 as sys::ImPlotBarsFlags,
                 0,                                 // No offset
                 std::mem::size_of::<f64>() as i32, // Stride, set to one f64 for the standard use case
             );
@@ -275,15 +233,7 @@ pub struct PlotText {
     pixel_offset_y: f32,
 }
 
-bitflags! {
-    #[repr(transparent)]
-    struct PlotTextFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotTextFlags__ImPlotTextFlags_None;
-        /// Text will be rendered vertically
-        const VERTICAL = sys::ImPlotTextFlags__ImPlotTextFlags_Vertical;
-    }
-}
+pub type PlotTextFlags = sys::ImPlotTextFlags_;
 
 impl PlotText {
     /// Create a new text label to be shown. Does not draw anything yet.
@@ -330,21 +280,13 @@ impl PlotText {
                     x: self.pixel_offset_x,
                     y: self.pixel_offset_y,
                 },
-                flags.bits() as sys::ImPlotFlags,
+                flags.0 as sys::ImPlotFlags,
             );
         }
     }
 }
 
-bitflags! {
-    #[repr(transparent)]
-    struct PlotHeatmapFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotHeatmapFlags__ImPlotHeatmapFlags_None;
-        /// Data will be read in column major order
-        const COL_MAJOR = sys::ImPlotHeatmapFlags__ImPlotHeatmapFlags_ColMajor;
-    }
-}
+pub type PlotHeatmapFlags = sys::ImPlotHeatmapFlags_;
 
 /// Struct to provide functionality for creating headmaps.
 pub struct PlotHeatmap {
@@ -454,7 +396,7 @@ impl PlotHeatmap {
                 },
                 self.drawarea_lower_left,
                 self.drawarea_upper_right,
-                flags.bits() as sys::ImPlotHeatmapFlags,
+                flags.0 as sys::ImPlotHeatmapFlags,
             );
         }
     }
@@ -469,15 +411,7 @@ pub struct PlotStems {
     reference_y: f64,
 }
 
-bitflags! {
-    #[repr(transparent)]
-    struct PlotStemsFlags: u32 {
-        /// Default
-        const NONE = sys::ImPlotStemsFlags__ImPlotStemsFlags_None;
-        /// Stems will be rendered horizontally on the current y-axis
-        const HORIZONTAL = sys::ImPlotStemsFlags__ImPlotStemsFlags_Horizontal;
-    }
-}
+pub type PlotStemsFlags = sys::ImPlotStemsFlags_;
 
 impl PlotStems {
     /// Create a new stem plot to be shown. Does not draw anything by itself, call
@@ -519,7 +453,7 @@ impl PlotStems {
                 stem_values.as_ptr(),
                 number_of_points as i32, // "as" casts saturate as of Rust 1.45. This is safe here.
                 self.reference_y,
-                flags.bits() as sys::ImPlotStemsFlags,
+                flags.0 as sys::ImPlotStemsFlags,
                 0,                                 // No offset
                 std::mem::size_of::<f64>() as i32, // Stride, set to one f64 for the standard use case
             );

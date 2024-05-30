@@ -49,25 +49,4 @@ pub enum PlotLocation {
     SouthEast = sys::ImPlotLocation__ImPlotLocation_SouthEast,
 }
 
-#[rustversion::attr(since(1.48), doc(alias = "ImPlotLegendFlags"))]
-/// Used to orient items on a plot (e.g. legends, labels, etc.)
-#[repr(u32)]
-#[derive(Copy, Clone, Debug)]
-pub enum PlotLegendFlags {
-    // Default
-    None = sys::ImPlotLegendFlags__ImPlotLegendFlags_None,
-    // Legend icons will not function as hide/show buttons
-    NoButtons = sys::ImPlotLegendFlags__ImPlotLegendFlags_NoButtons,
-    // Plot items will not be highlighted when their legend entry is hovered
-    NoHighlightItem = sys::ImPlotLegendFlags__ImPlotLegendFlags_NoHighlightItem,
-    // Axes will not be highlighted when legend entries are hovered (only relevant if x/y-axis count > 1)
-    NoHighlightAxis = sys::ImPlotLegendFlags__ImPlotLegendFlags_NoHighlightAxis,
-    // The user will not be able to open context menus with right-click
-    NoMenus = sys::ImPlotLegendFlags__ImPlotLegendFlags_NoMenus,
-    // Legend will be rendered outside of the plot area
-    Outside = sys::ImPlotLegendFlags__ImPlotLegendFlags_Outside,
-    // Legend entries will be displayed horizontally
-    Horizontal = sys::ImPlotLegendFlags__ImPlotLegendFlags_Horizontal,
-    // Legend entries will be displayed in alphabetical order
-    Sort = sys::ImPlotLegendFlags__ImPlotLegendFlags_Sort,
-}
+pub type PlotLegendFlags = sys::ImPlotLegendFlags_;
