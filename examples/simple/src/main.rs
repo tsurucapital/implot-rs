@@ -1,4 +1,4 @@
-use std::{ffi::CString, mem::size_of, num::NonZeroU32};
+use std::num::NonZeroU32;
 
 use glium::{
     glutin::{
@@ -18,10 +18,7 @@ use imgui_winit_support::{
     },
     WinitPlatform,
 };
-use implot::{
-    sys::{ImPlot_BeginPlot, ImPlot_EndPlot, ImPlot_PlotLine_FloatPtrInt},
-    ImVec2,
-};
+use implot::{PlotLine, PlotLineFlags};
 use raw_window_handle::HasRawWindowHandle;
 
 fn create_window<T: Into<String>>(
@@ -104,7 +101,7 @@ fn main() {
     let (event_loop, window, display) = create_window("Hello ImPlot!");
     let (mut winit_platform, mut imgui_context) = imgui_init(&window);
 
-    let _plot = implot::Context::create();
+    let plot_ctx = implot::Context::create();
 
     let mut renderer = imgui_glium_renderer::Renderer::init(&mut imgui_context, &display).unwrap();
 
@@ -125,27 +122,17 @@ fn main() {
                 let ui = imgui_context.frame();
 
                 ui.window("Test Window").build(|| {
-                    let title_id = CString::new("A plot").unwrap();
-                    let size = ImVec2 { x: 0.0, y: 0.0 };
-                    // let flags = ImPlotFlags__ImPlotFlags_None as i32;
-                    let flags = 0;
-                    let plot_id = CString::new("My plot").unwrap();
-                    unsafe {
-                        let should_render = ImPlot_BeginPlot(title_id.as_ptr(), size, flags);
-                        if should_render {
-                            ImPlot_PlotLine_FloatPtrInt(
-                                plot_id.as_ptr(),
-                                [0.0, 1.0, 2.0, 4.0].as_ptr(),
-                                4,
-                                1.0,
-                                0.0,
-                                0,
-                                0,
-                                size_of::<f32>() as i32,
-                            );
-                            ImPlot_EndPlot();
-                        }
-                    }
+                    let plot_ui = &plot_ctx.get_plot_ui();
+                    implot::Plot::new("A plot")
+                        .x_label("x label")
+                        .y_label("y label")
+                        .with_axis(implot::AxisChoice::Y2)
+                        .axis_label("y2 label", implot::AxisChoice::Y2)
+                        .build(plot_ui, || {
+                            PlotLine::new("A line")
+                                .with_flags(PlotLineFlags::SHADED)
+                                .plot(&[0.0, 1.0, 2.0, 3.0], &[0.0, 1.0, 2.0, 4.0]);
+                        });
                 });
 
                 // Setup drawing
