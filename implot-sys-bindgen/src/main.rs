@@ -1,9 +1,54 @@
-use bindgen::{Builder, CargoCallbacks};
+use bindgen::{callbacks::EnumVariantValue, Builder};
 use std::{env, io::Write, path::PathBuf};
 
 // All this crate does is run bindgen on cimplot and store the result
 // in the src folder of the implot-sys crate. We add those bindings
 // to git so people don't have to install clang just to use implot-rs.
+
+#[derive(Debug)]
+struct Callbacks;
+
+pub fn to_snake_case(name: &str) -> String {
+    let mut s = String::new();
+    for (i, c) in name.chars().enumerate() {
+        if c.is_uppercase() {
+            // characters without capitalization are considered lowercase
+            if i != 0 {
+                s.push('_');
+            }
+            s.push(c);
+        } else {
+            s.push(c.to_ascii_uppercase());
+        }
+    }
+    s
+}
+
+fn convert_camel_case(s: &str) -> String {
+    // Take care of exceptions
+    let s = s.replace("NaN", "Nan");
+
+    // Change case
+    to_snake_case(&s).to_uppercase()
+}
+
+impl bindgen::callbacks::ParseCallbacks for Callbacks {
+    fn enum_variant_name(
+        &self,
+        enum_name: Option<&str>,
+        original_variant_name: &str,
+        _variant_value: EnumVariantValue,
+    ) -> Option<String> {
+        let enum_name = enum_name?;
+        if enum_name.starts_with("ImPlot") && enum_name.ends_with("Flags_") {
+            // Remove everything before `_`
+            let name = original_variant_name.splitn(2, '_').last().unwrap();
+            Some(convert_camel_case(name))
+        } else {
+            None
+        }
+    }
+}
 
 fn main() {
     let cwd = env::current_dir().expect("Could not read current directory");
@@ -28,7 +73,7 @@ fn main() {
                 .to_str()
                 .expect("Could not turn cimplot.h path into string"),
         )
-        .parse_callbacks(Box::new(CargoCallbacks))
+        .parse_callbacks(Box::new(Callbacks))
         // Reuse the imgui types that implot requires from imgui_sys so we don't define
         // our own new types.
         .raw_line("pub use imgui_sys::*;")
@@ -50,6 +95,7 @@ fn main() {
         .blocklist_function("ImPlot_TagYV")
         .blocklist_function("ImPlotAnnotationCollection_AppendV")
         .blocklist_function("ImPlotTagCollection_AppendV")
+        .bitfield_enum("ImPlot([a-zA-Z]*)Flags_")
         // See https://github.com/rust-lang/rust-bindgen/issues/1188
         .blocklist_type("time_t")
         .raw_line("pub type time_t = libc::time_t;")
