@@ -3236,137 +3236,1020 @@ pub const ImAxis__ImAxis_Y2: ImAxis_ = 4;
 pub const ImAxis__ImAxis_Y3: ImAxis_ = 5;
 pub const ImAxis__ImAxis_COUNT: ImAxis_ = 6;
 pub type ImAxis_ = ::std::os::raw::c_uint;
-pub const ImPlotFlags__ImPlotFlags_None: ImPlotFlags_ = 0;
-pub const ImPlotFlags__ImPlotFlags_NoTitle: ImPlotFlags_ = 1;
-pub const ImPlotFlags__ImPlotFlags_NoLegend: ImPlotFlags_ = 2;
-pub const ImPlotFlags__ImPlotFlags_NoMouseText: ImPlotFlags_ = 4;
-pub const ImPlotFlags__ImPlotFlags_NoInputs: ImPlotFlags_ = 8;
-pub const ImPlotFlags__ImPlotFlags_NoMenus: ImPlotFlags_ = 16;
-pub const ImPlotFlags__ImPlotFlags_NoBoxSelect: ImPlotFlags_ = 32;
-pub const ImPlotFlags__ImPlotFlags_NoFrame: ImPlotFlags_ = 64;
-pub const ImPlotFlags__ImPlotFlags_Equal: ImPlotFlags_ = 128;
-pub const ImPlotFlags__ImPlotFlags_Crosshairs: ImPlotFlags_ = 256;
-pub const ImPlotFlags__ImPlotFlags_CanvasOnly: ImPlotFlags_ = 55;
-pub type ImPlotFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_None: ImPlotAxisFlags_ = 0;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoLabel: ImPlotAxisFlags_ = 1;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoGridLines: ImPlotAxisFlags_ = 2;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoTickMarks: ImPlotAxisFlags_ = 4;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoTickLabels: ImPlotAxisFlags_ = 8;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoInitialFit: ImPlotAxisFlags_ = 16;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoMenus: ImPlotAxisFlags_ = 32;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoSideSwitch: ImPlotAxisFlags_ = 64;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoHighlight: ImPlotAxisFlags_ = 128;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_Opposite: ImPlotAxisFlags_ = 256;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_Foreground: ImPlotAxisFlags_ = 512;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_Invert: ImPlotAxisFlags_ = 1024;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_AutoFit: ImPlotAxisFlags_ = 2048;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_RangeFit: ImPlotAxisFlags_ = 4096;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_PanStretch: ImPlotAxisFlags_ = 8192;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_LockMin: ImPlotAxisFlags_ = 16384;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_LockMax: ImPlotAxisFlags_ = 32768;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_Lock: ImPlotAxisFlags_ = 49152;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_NoDecorations: ImPlotAxisFlags_ = 15;
-pub const ImPlotAxisFlags__ImPlotAxisFlags_AuxDefault: ImPlotAxisFlags_ = 258;
-pub type ImPlotAxisFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_None: ImPlotSubplotFlags_ = 0;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_NoTitle: ImPlotSubplotFlags_ = 1;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_NoLegend: ImPlotSubplotFlags_ = 2;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_NoMenus: ImPlotSubplotFlags_ = 4;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_NoResize: ImPlotSubplotFlags_ = 8;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_NoAlign: ImPlotSubplotFlags_ = 16;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_ShareItems: ImPlotSubplotFlags_ = 32;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_LinkRows: ImPlotSubplotFlags_ = 64;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_LinkCols: ImPlotSubplotFlags_ = 128;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_LinkAllX: ImPlotSubplotFlags_ = 256;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_LinkAllY: ImPlotSubplotFlags_ = 512;
-pub const ImPlotSubplotFlags__ImPlotSubplotFlags_ColMajor: ImPlotSubplotFlags_ = 1024;
-pub type ImPlotSubplotFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_None: ImPlotLegendFlags_ = 0;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_NoButtons: ImPlotLegendFlags_ = 1;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_NoHighlightItem: ImPlotLegendFlags_ = 2;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_NoHighlightAxis: ImPlotLegendFlags_ = 4;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_NoMenus: ImPlotLegendFlags_ = 8;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_Outside: ImPlotLegendFlags_ = 16;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_Horizontal: ImPlotLegendFlags_ = 32;
-pub const ImPlotLegendFlags__ImPlotLegendFlags_Sort: ImPlotLegendFlags_ = 64;
-pub type ImPlotLegendFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotMouseTextFlags__ImPlotMouseTextFlags_None: ImPlotMouseTextFlags_ = 0;
-pub const ImPlotMouseTextFlags__ImPlotMouseTextFlags_NoAuxAxes: ImPlotMouseTextFlags_ = 1;
-pub const ImPlotMouseTextFlags__ImPlotMouseTextFlags_NoFormat: ImPlotMouseTextFlags_ = 2;
-pub const ImPlotMouseTextFlags__ImPlotMouseTextFlags_ShowAlways: ImPlotMouseTextFlags_ = 4;
-pub type ImPlotMouseTextFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotDragToolFlags__ImPlotDragToolFlags_None: ImPlotDragToolFlags_ = 0;
-pub const ImPlotDragToolFlags__ImPlotDragToolFlags_NoCursors: ImPlotDragToolFlags_ = 1;
-pub const ImPlotDragToolFlags__ImPlotDragToolFlags_NoFit: ImPlotDragToolFlags_ = 2;
-pub const ImPlotDragToolFlags__ImPlotDragToolFlags_NoInputs: ImPlotDragToolFlags_ = 4;
-pub const ImPlotDragToolFlags__ImPlotDragToolFlags_Delayed: ImPlotDragToolFlags_ = 8;
-pub type ImPlotDragToolFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotColormapScaleFlags__ImPlotColormapScaleFlags_None: ImPlotColormapScaleFlags_ = 0;
-pub const ImPlotColormapScaleFlags__ImPlotColormapScaleFlags_NoLabel: ImPlotColormapScaleFlags_ = 1;
-pub const ImPlotColormapScaleFlags__ImPlotColormapScaleFlags_Opposite: ImPlotColormapScaleFlags_ =
-    2;
-pub const ImPlotColormapScaleFlags__ImPlotColormapScaleFlags_Invert: ImPlotColormapScaleFlags_ = 4;
-pub type ImPlotColormapScaleFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotItemFlags__ImPlotItemFlags_None: ImPlotItemFlags_ = 0;
-pub const ImPlotItemFlags__ImPlotItemFlags_NoLegend: ImPlotItemFlags_ = 1;
-pub const ImPlotItemFlags__ImPlotItemFlags_NoFit: ImPlotItemFlags_ = 2;
-pub type ImPlotItemFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotLineFlags__ImPlotLineFlags_None: ImPlotLineFlags_ = 0;
-pub const ImPlotLineFlags__ImPlotLineFlags_Segments: ImPlotLineFlags_ = 1024;
-pub const ImPlotLineFlags__ImPlotLineFlags_Loop: ImPlotLineFlags_ = 2048;
-pub const ImPlotLineFlags__ImPlotLineFlags_SkipNaN: ImPlotLineFlags_ = 4096;
-pub const ImPlotLineFlags__ImPlotLineFlags_NoClip: ImPlotLineFlags_ = 8192;
-pub const ImPlotLineFlags__ImPlotLineFlags_Shaded: ImPlotLineFlags_ = 16384;
-pub type ImPlotLineFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotScatterFlags__ImPlotScatterFlags_None: ImPlotScatterFlags_ = 0;
-pub const ImPlotScatterFlags__ImPlotScatterFlags_NoClip: ImPlotScatterFlags_ = 1024;
-pub type ImPlotScatterFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotStairsFlags__ImPlotStairsFlags_None: ImPlotStairsFlags_ = 0;
-pub const ImPlotStairsFlags__ImPlotStairsFlags_PreStep: ImPlotStairsFlags_ = 1024;
-pub const ImPlotStairsFlags__ImPlotStairsFlags_Shaded: ImPlotStairsFlags_ = 2048;
-pub type ImPlotStairsFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotShadedFlags__ImPlotShadedFlags_None: ImPlotShadedFlags_ = 0;
-pub type ImPlotShadedFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotBarsFlags__ImPlotBarsFlags_None: ImPlotBarsFlags_ = 0;
-pub const ImPlotBarsFlags__ImPlotBarsFlags_Horizontal: ImPlotBarsFlags_ = 1024;
-pub type ImPlotBarsFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotBarGroupsFlags__ImPlotBarGroupsFlags_None: ImPlotBarGroupsFlags_ = 0;
-pub const ImPlotBarGroupsFlags__ImPlotBarGroupsFlags_Horizontal: ImPlotBarGroupsFlags_ = 1024;
-pub const ImPlotBarGroupsFlags__ImPlotBarGroupsFlags_Stacked: ImPlotBarGroupsFlags_ = 2048;
-pub type ImPlotBarGroupsFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotErrorBarsFlags__ImPlotErrorBarsFlags_None: ImPlotErrorBarsFlags_ = 0;
-pub const ImPlotErrorBarsFlags__ImPlotErrorBarsFlags_Horizontal: ImPlotErrorBarsFlags_ = 1024;
-pub type ImPlotErrorBarsFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotStemsFlags__ImPlotStemsFlags_None: ImPlotStemsFlags_ = 0;
-pub const ImPlotStemsFlags__ImPlotStemsFlags_Horizontal: ImPlotStemsFlags_ = 1024;
-pub type ImPlotStemsFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotInfLinesFlags__ImPlotInfLinesFlags_None: ImPlotInfLinesFlags_ = 0;
-pub const ImPlotInfLinesFlags__ImPlotInfLinesFlags_Horizontal: ImPlotInfLinesFlags_ = 1024;
-pub type ImPlotInfLinesFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotPieChartFlags__ImPlotPieChartFlags_None: ImPlotPieChartFlags_ = 0;
-pub const ImPlotPieChartFlags__ImPlotPieChartFlags_Normalize: ImPlotPieChartFlags_ = 1024;
-pub const ImPlotPieChartFlags__ImPlotPieChartFlags_IgnoreHidden: ImPlotPieChartFlags_ = 2048;
-pub type ImPlotPieChartFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotHeatmapFlags__ImPlotHeatmapFlags_None: ImPlotHeatmapFlags_ = 0;
-pub const ImPlotHeatmapFlags__ImPlotHeatmapFlags_ColMajor: ImPlotHeatmapFlags_ = 1024;
-pub type ImPlotHeatmapFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotHistogramFlags__ImPlotHistogramFlags_None: ImPlotHistogramFlags_ = 0;
-pub const ImPlotHistogramFlags__ImPlotHistogramFlags_Horizontal: ImPlotHistogramFlags_ = 1024;
-pub const ImPlotHistogramFlags__ImPlotHistogramFlags_Cumulative: ImPlotHistogramFlags_ = 2048;
-pub const ImPlotHistogramFlags__ImPlotHistogramFlags_Density: ImPlotHistogramFlags_ = 4096;
-pub const ImPlotHistogramFlags__ImPlotHistogramFlags_NoOutliers: ImPlotHistogramFlags_ = 8192;
-pub const ImPlotHistogramFlags__ImPlotHistogramFlags_ColMajor: ImPlotHistogramFlags_ = 16384;
-pub type ImPlotHistogramFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotDigitalFlags__ImPlotDigitalFlags_None: ImPlotDigitalFlags_ = 0;
-pub type ImPlotDigitalFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotImageFlags__ImPlotImageFlags_None: ImPlotImageFlags_ = 0;
-pub type ImPlotImageFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotTextFlags__ImPlotTextFlags_None: ImPlotTextFlags_ = 0;
-pub const ImPlotTextFlags__ImPlotTextFlags_Vertical: ImPlotTextFlags_ = 1024;
-pub type ImPlotTextFlags_ = ::std::os::raw::c_uint;
-pub const ImPlotDummyFlags__ImPlotDummyFlags_None: ImPlotDummyFlags_ = 0;
-pub type ImPlotDummyFlags_ = ::std::os::raw::c_uint;
+impl ImPlotFlags_ {
+    pub const NONE: ImPlotFlags_ = ImPlotFlags_(0);
+}
+impl ImPlotFlags_ {
+    pub const NO_TITLE: ImPlotFlags_ = ImPlotFlags_(1);
+}
+impl ImPlotFlags_ {
+    pub const NO_LEGEND: ImPlotFlags_ = ImPlotFlags_(2);
+}
+impl ImPlotFlags_ {
+    pub const NO_MOUSE_TEXT: ImPlotFlags_ = ImPlotFlags_(4);
+}
+impl ImPlotFlags_ {
+    pub const NO_INPUTS: ImPlotFlags_ = ImPlotFlags_(8);
+}
+impl ImPlotFlags_ {
+    pub const NO_MENUS: ImPlotFlags_ = ImPlotFlags_(16);
+}
+impl ImPlotFlags_ {
+    pub const NO_BOX_SELECT: ImPlotFlags_ = ImPlotFlags_(32);
+}
+impl ImPlotFlags_ {
+    pub const NO_FRAME: ImPlotFlags_ = ImPlotFlags_(64);
+}
+impl ImPlotFlags_ {
+    pub const EQUAL: ImPlotFlags_ = ImPlotFlags_(128);
+}
+impl ImPlotFlags_ {
+    pub const CROSSHAIRS: ImPlotFlags_ = ImPlotFlags_(256);
+}
+impl ImPlotFlags_ {
+    pub const CANVAS_ONLY: ImPlotFlags_ = ImPlotFlags_(55);
+}
+impl ::std::ops::BitOr<ImPlotFlags_> for ImPlotFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotFlags_> for ImPlotFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotAxisFlags_ {
+    pub const NONE: ImPlotAxisFlags_ = ImPlotAxisFlags_(0);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_LABEL: ImPlotAxisFlags_ = ImPlotAxisFlags_(1);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_GRID_LINES: ImPlotAxisFlags_ = ImPlotAxisFlags_(2);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_TICK_MARKS: ImPlotAxisFlags_ = ImPlotAxisFlags_(4);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_TICK_LABELS: ImPlotAxisFlags_ = ImPlotAxisFlags_(8);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_INITIAL_FIT: ImPlotAxisFlags_ = ImPlotAxisFlags_(16);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_MENUS: ImPlotAxisFlags_ = ImPlotAxisFlags_(32);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_SIDE_SWITCH: ImPlotAxisFlags_ = ImPlotAxisFlags_(64);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_HIGHLIGHT: ImPlotAxisFlags_ = ImPlotAxisFlags_(128);
+}
+impl ImPlotAxisFlags_ {
+    pub const OPPOSITE: ImPlotAxisFlags_ = ImPlotAxisFlags_(256);
+}
+impl ImPlotAxisFlags_ {
+    pub const FOREGROUND: ImPlotAxisFlags_ = ImPlotAxisFlags_(512);
+}
+impl ImPlotAxisFlags_ {
+    pub const INVERT: ImPlotAxisFlags_ = ImPlotAxisFlags_(1024);
+}
+impl ImPlotAxisFlags_ {
+    pub const AUTO_FIT: ImPlotAxisFlags_ = ImPlotAxisFlags_(2048);
+}
+impl ImPlotAxisFlags_ {
+    pub const RANGE_FIT: ImPlotAxisFlags_ = ImPlotAxisFlags_(4096);
+}
+impl ImPlotAxisFlags_ {
+    pub const PAN_STRETCH: ImPlotAxisFlags_ = ImPlotAxisFlags_(8192);
+}
+impl ImPlotAxisFlags_ {
+    pub const LOCK_MIN: ImPlotAxisFlags_ = ImPlotAxisFlags_(16384);
+}
+impl ImPlotAxisFlags_ {
+    pub const LOCK_MAX: ImPlotAxisFlags_ = ImPlotAxisFlags_(32768);
+}
+impl ImPlotAxisFlags_ {
+    pub const LOCK: ImPlotAxisFlags_ = ImPlotAxisFlags_(49152);
+}
+impl ImPlotAxisFlags_ {
+    pub const NO_DECORATIONS: ImPlotAxisFlags_ = ImPlotAxisFlags_(15);
+}
+impl ImPlotAxisFlags_ {
+    pub const AUX_DEFAULT: ImPlotAxisFlags_ = ImPlotAxisFlags_(258);
+}
+impl ::std::ops::BitOr<ImPlotAxisFlags_> for ImPlotAxisFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotAxisFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotAxisFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotAxisFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotAxisFlags_> for ImPlotAxisFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotAxisFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotAxisFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotAxisFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotAxisFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotSubplotFlags_ {
+    pub const NONE: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(0);
+}
+impl ImPlotSubplotFlags_ {
+    pub const NO_TITLE: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(1);
+}
+impl ImPlotSubplotFlags_ {
+    pub const NO_LEGEND: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(2);
+}
+impl ImPlotSubplotFlags_ {
+    pub const NO_MENUS: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(4);
+}
+impl ImPlotSubplotFlags_ {
+    pub const NO_RESIZE: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(8);
+}
+impl ImPlotSubplotFlags_ {
+    pub const NO_ALIGN: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(16);
+}
+impl ImPlotSubplotFlags_ {
+    pub const SHARE_ITEMS: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(32);
+}
+impl ImPlotSubplotFlags_ {
+    pub const LINK_ROWS: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(64);
+}
+impl ImPlotSubplotFlags_ {
+    pub const LINK_COLS: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(128);
+}
+impl ImPlotSubplotFlags_ {
+    pub const LINK_ALL_X: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(256);
+}
+impl ImPlotSubplotFlags_ {
+    pub const LINK_ALL_Y: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(512);
+}
+impl ImPlotSubplotFlags_ {
+    pub const COL_MAJOR: ImPlotSubplotFlags_ = ImPlotSubplotFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotSubplotFlags_> for ImPlotSubplotFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotSubplotFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotSubplotFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotSubplotFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotSubplotFlags_> for ImPlotSubplotFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotSubplotFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotSubplotFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotSubplotFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotSubplotFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotLegendFlags_ {
+    pub const NONE: ImPlotLegendFlags_ = ImPlotLegendFlags_(0);
+}
+impl ImPlotLegendFlags_ {
+    pub const NO_BUTTONS: ImPlotLegendFlags_ = ImPlotLegendFlags_(1);
+}
+impl ImPlotLegendFlags_ {
+    pub const NO_HIGHLIGHT_ITEM: ImPlotLegendFlags_ = ImPlotLegendFlags_(2);
+}
+impl ImPlotLegendFlags_ {
+    pub const NO_HIGHLIGHT_AXIS: ImPlotLegendFlags_ = ImPlotLegendFlags_(4);
+}
+impl ImPlotLegendFlags_ {
+    pub const NO_MENUS: ImPlotLegendFlags_ = ImPlotLegendFlags_(8);
+}
+impl ImPlotLegendFlags_ {
+    pub const OUTSIDE: ImPlotLegendFlags_ = ImPlotLegendFlags_(16);
+}
+impl ImPlotLegendFlags_ {
+    pub const HORIZONTAL: ImPlotLegendFlags_ = ImPlotLegendFlags_(32);
+}
+impl ImPlotLegendFlags_ {
+    pub const SORT: ImPlotLegendFlags_ = ImPlotLegendFlags_(64);
+}
+impl ::std::ops::BitOr<ImPlotLegendFlags_> for ImPlotLegendFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotLegendFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotLegendFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotLegendFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotLegendFlags_> for ImPlotLegendFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotLegendFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotLegendFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotLegendFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotLegendFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotMouseTextFlags_ {
+    pub const NONE: ImPlotMouseTextFlags_ = ImPlotMouseTextFlags_(0);
+}
+impl ImPlotMouseTextFlags_ {
+    pub const NO_AUX_AXES: ImPlotMouseTextFlags_ = ImPlotMouseTextFlags_(1);
+}
+impl ImPlotMouseTextFlags_ {
+    pub const NO_FORMAT: ImPlotMouseTextFlags_ = ImPlotMouseTextFlags_(2);
+}
+impl ImPlotMouseTextFlags_ {
+    pub const SHOW_ALWAYS: ImPlotMouseTextFlags_ = ImPlotMouseTextFlags_(4);
+}
+impl ::std::ops::BitOr<ImPlotMouseTextFlags_> for ImPlotMouseTextFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotMouseTextFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotMouseTextFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotMouseTextFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotMouseTextFlags_> for ImPlotMouseTextFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotMouseTextFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotMouseTextFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotMouseTextFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotMouseTextFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotDragToolFlags_ {
+    pub const NONE: ImPlotDragToolFlags_ = ImPlotDragToolFlags_(0);
+}
+impl ImPlotDragToolFlags_ {
+    pub const NO_CURSORS: ImPlotDragToolFlags_ = ImPlotDragToolFlags_(1);
+}
+impl ImPlotDragToolFlags_ {
+    pub const NO_FIT: ImPlotDragToolFlags_ = ImPlotDragToolFlags_(2);
+}
+impl ImPlotDragToolFlags_ {
+    pub const NO_INPUTS: ImPlotDragToolFlags_ = ImPlotDragToolFlags_(4);
+}
+impl ImPlotDragToolFlags_ {
+    pub const DELAYED: ImPlotDragToolFlags_ = ImPlotDragToolFlags_(8);
+}
+impl ::std::ops::BitOr<ImPlotDragToolFlags_> for ImPlotDragToolFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotDragToolFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotDragToolFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotDragToolFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotDragToolFlags_> for ImPlotDragToolFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotDragToolFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotDragToolFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotDragToolFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotDragToolFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotColormapScaleFlags_ {
+    pub const NONE: ImPlotColormapScaleFlags_ = ImPlotColormapScaleFlags_(0);
+}
+impl ImPlotColormapScaleFlags_ {
+    pub const NO_LABEL: ImPlotColormapScaleFlags_ = ImPlotColormapScaleFlags_(1);
+}
+impl ImPlotColormapScaleFlags_ {
+    pub const OPPOSITE: ImPlotColormapScaleFlags_ = ImPlotColormapScaleFlags_(2);
+}
+impl ImPlotColormapScaleFlags_ {
+    pub const INVERT: ImPlotColormapScaleFlags_ = ImPlotColormapScaleFlags_(4);
+}
+impl ::std::ops::BitOr<ImPlotColormapScaleFlags_> for ImPlotColormapScaleFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotColormapScaleFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotColormapScaleFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotColormapScaleFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotColormapScaleFlags_> for ImPlotColormapScaleFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotColormapScaleFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotColormapScaleFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotColormapScaleFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotColormapScaleFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotItemFlags_ {
+    pub const NONE: ImPlotItemFlags_ = ImPlotItemFlags_(0);
+}
+impl ImPlotItemFlags_ {
+    pub const NO_LEGEND: ImPlotItemFlags_ = ImPlotItemFlags_(1);
+}
+impl ImPlotItemFlags_ {
+    pub const NO_FIT: ImPlotItemFlags_ = ImPlotItemFlags_(2);
+}
+impl ::std::ops::BitOr<ImPlotItemFlags_> for ImPlotItemFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotItemFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotItemFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotItemFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotItemFlags_> for ImPlotItemFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotItemFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotItemFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotItemFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotItemFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotLineFlags_ {
+    pub const NONE: ImPlotLineFlags_ = ImPlotLineFlags_(0);
+}
+impl ImPlotLineFlags_ {
+    pub const SEGMENTS: ImPlotLineFlags_ = ImPlotLineFlags_(1024);
+}
+impl ImPlotLineFlags_ {
+    pub const LOOP: ImPlotLineFlags_ = ImPlotLineFlags_(2048);
+}
+impl ImPlotLineFlags_ {
+    pub const SKIP_NAN: ImPlotLineFlags_ = ImPlotLineFlags_(4096);
+}
+impl ImPlotLineFlags_ {
+    pub const NO_CLIP: ImPlotLineFlags_ = ImPlotLineFlags_(8192);
+}
+impl ImPlotLineFlags_ {
+    pub const SHADED: ImPlotLineFlags_ = ImPlotLineFlags_(16384);
+}
+impl ::std::ops::BitOr<ImPlotLineFlags_> for ImPlotLineFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotLineFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotLineFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotLineFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotLineFlags_> for ImPlotLineFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotLineFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotLineFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotLineFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotLineFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotScatterFlags_ {
+    pub const NONE: ImPlotScatterFlags_ = ImPlotScatterFlags_(0);
+}
+impl ImPlotScatterFlags_ {
+    pub const NO_CLIP: ImPlotScatterFlags_ = ImPlotScatterFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotScatterFlags_> for ImPlotScatterFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotScatterFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotScatterFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotScatterFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotScatterFlags_> for ImPlotScatterFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotScatterFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotScatterFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotScatterFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotScatterFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotStairsFlags_ {
+    pub const NONE: ImPlotStairsFlags_ = ImPlotStairsFlags_(0);
+}
+impl ImPlotStairsFlags_ {
+    pub const PRE_STEP: ImPlotStairsFlags_ = ImPlotStairsFlags_(1024);
+}
+impl ImPlotStairsFlags_ {
+    pub const SHADED: ImPlotStairsFlags_ = ImPlotStairsFlags_(2048);
+}
+impl ::std::ops::BitOr<ImPlotStairsFlags_> for ImPlotStairsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotStairsFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotStairsFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotStairsFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotStairsFlags_> for ImPlotStairsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotStairsFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotStairsFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotStairsFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotStairsFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotShadedFlags_ {
+    pub const NONE: ImPlotShadedFlags_ = ImPlotShadedFlags_(0);
+}
+impl ::std::ops::BitOr<ImPlotShadedFlags_> for ImPlotShadedFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotShadedFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotShadedFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotShadedFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotShadedFlags_> for ImPlotShadedFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotShadedFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotShadedFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotShadedFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotShadedFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotBarsFlags_ {
+    pub const NONE: ImPlotBarsFlags_ = ImPlotBarsFlags_(0);
+}
+impl ImPlotBarsFlags_ {
+    pub const HORIZONTAL: ImPlotBarsFlags_ = ImPlotBarsFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotBarsFlags_> for ImPlotBarsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotBarsFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotBarsFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotBarsFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotBarsFlags_> for ImPlotBarsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotBarsFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotBarsFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotBarsFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotBarsFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotBarGroupsFlags_ {
+    pub const NONE: ImPlotBarGroupsFlags_ = ImPlotBarGroupsFlags_(0);
+}
+impl ImPlotBarGroupsFlags_ {
+    pub const HORIZONTAL: ImPlotBarGroupsFlags_ = ImPlotBarGroupsFlags_(1024);
+}
+impl ImPlotBarGroupsFlags_ {
+    pub const STACKED: ImPlotBarGroupsFlags_ = ImPlotBarGroupsFlags_(2048);
+}
+impl ::std::ops::BitOr<ImPlotBarGroupsFlags_> for ImPlotBarGroupsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotBarGroupsFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotBarGroupsFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotBarGroupsFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotBarGroupsFlags_> for ImPlotBarGroupsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotBarGroupsFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotBarGroupsFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotBarGroupsFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotBarGroupsFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotErrorBarsFlags_ {
+    pub const NONE: ImPlotErrorBarsFlags_ = ImPlotErrorBarsFlags_(0);
+}
+impl ImPlotErrorBarsFlags_ {
+    pub const HORIZONTAL: ImPlotErrorBarsFlags_ = ImPlotErrorBarsFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotErrorBarsFlags_> for ImPlotErrorBarsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotErrorBarsFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotErrorBarsFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotErrorBarsFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotErrorBarsFlags_> for ImPlotErrorBarsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotErrorBarsFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotErrorBarsFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotErrorBarsFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotErrorBarsFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotStemsFlags_ {
+    pub const NONE: ImPlotStemsFlags_ = ImPlotStemsFlags_(0);
+}
+impl ImPlotStemsFlags_ {
+    pub const HORIZONTAL: ImPlotStemsFlags_ = ImPlotStemsFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotStemsFlags_> for ImPlotStemsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotStemsFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotStemsFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotStemsFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotStemsFlags_> for ImPlotStemsFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotStemsFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotStemsFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotStemsFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotStemsFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotInfLinesFlags_ {
+    pub const NONE: ImPlotInfLinesFlags_ = ImPlotInfLinesFlags_(0);
+}
+impl ImPlotInfLinesFlags_ {
+    pub const HORIZONTAL: ImPlotInfLinesFlags_ = ImPlotInfLinesFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotInfLinesFlags_> for ImPlotInfLinesFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotInfLinesFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotInfLinesFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotInfLinesFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotInfLinesFlags_> for ImPlotInfLinesFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotInfLinesFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotInfLinesFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotInfLinesFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotInfLinesFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotPieChartFlags_ {
+    pub const NONE: ImPlotPieChartFlags_ = ImPlotPieChartFlags_(0);
+}
+impl ImPlotPieChartFlags_ {
+    pub const NORMALIZE: ImPlotPieChartFlags_ = ImPlotPieChartFlags_(1024);
+}
+impl ImPlotPieChartFlags_ {
+    pub const IGNORE_HIDDEN: ImPlotPieChartFlags_ = ImPlotPieChartFlags_(2048);
+}
+impl ::std::ops::BitOr<ImPlotPieChartFlags_> for ImPlotPieChartFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotPieChartFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotPieChartFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotPieChartFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotPieChartFlags_> for ImPlotPieChartFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotPieChartFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotPieChartFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotPieChartFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotPieChartFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotHeatmapFlags_ {
+    pub const NONE: ImPlotHeatmapFlags_ = ImPlotHeatmapFlags_(0);
+}
+impl ImPlotHeatmapFlags_ {
+    pub const COL_MAJOR: ImPlotHeatmapFlags_ = ImPlotHeatmapFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotHeatmapFlags_> for ImPlotHeatmapFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotHeatmapFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotHeatmapFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotHeatmapFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotHeatmapFlags_> for ImPlotHeatmapFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotHeatmapFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotHeatmapFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotHeatmapFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotHeatmapFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotHistogramFlags_ {
+    pub const NONE: ImPlotHistogramFlags_ = ImPlotHistogramFlags_(0);
+}
+impl ImPlotHistogramFlags_ {
+    pub const HORIZONTAL: ImPlotHistogramFlags_ = ImPlotHistogramFlags_(1024);
+}
+impl ImPlotHistogramFlags_ {
+    pub const CUMULATIVE: ImPlotHistogramFlags_ = ImPlotHistogramFlags_(2048);
+}
+impl ImPlotHistogramFlags_ {
+    pub const DENSITY: ImPlotHistogramFlags_ = ImPlotHistogramFlags_(4096);
+}
+impl ImPlotHistogramFlags_ {
+    pub const NO_OUTLIERS: ImPlotHistogramFlags_ = ImPlotHistogramFlags_(8192);
+}
+impl ImPlotHistogramFlags_ {
+    pub const COL_MAJOR: ImPlotHistogramFlags_ = ImPlotHistogramFlags_(16384);
+}
+impl ::std::ops::BitOr<ImPlotHistogramFlags_> for ImPlotHistogramFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotHistogramFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotHistogramFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotHistogramFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotHistogramFlags_> for ImPlotHistogramFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotHistogramFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotHistogramFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotHistogramFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotHistogramFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotDigitalFlags_ {
+    pub const NONE: ImPlotDigitalFlags_ = ImPlotDigitalFlags_(0);
+}
+impl ::std::ops::BitOr<ImPlotDigitalFlags_> for ImPlotDigitalFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotDigitalFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotDigitalFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotDigitalFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotDigitalFlags_> for ImPlotDigitalFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotDigitalFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotDigitalFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotDigitalFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotDigitalFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotImageFlags_ {
+    pub const NONE: ImPlotImageFlags_ = ImPlotImageFlags_(0);
+}
+impl ::std::ops::BitOr<ImPlotImageFlags_> for ImPlotImageFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotImageFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotImageFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotImageFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotImageFlags_> for ImPlotImageFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotImageFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotImageFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotImageFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotImageFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotTextFlags_ {
+    pub const NONE: ImPlotTextFlags_ = ImPlotTextFlags_(0);
+}
+impl ImPlotTextFlags_ {
+    pub const VERTICAL: ImPlotTextFlags_ = ImPlotTextFlags_(1024);
+}
+impl ::std::ops::BitOr<ImPlotTextFlags_> for ImPlotTextFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotTextFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotTextFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotTextFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotTextFlags_> for ImPlotTextFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotTextFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotTextFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotTextFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotTextFlags_(pub ::std::os::raw::c_uint);
+impl ImPlotDummyFlags_ {
+    pub const NONE: ImPlotDummyFlags_ = ImPlotDummyFlags_(0);
+}
+impl ::std::ops::BitOr<ImPlotDummyFlags_> for ImPlotDummyFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        ImPlotDummyFlags_(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for ImPlotDummyFlags_ {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: ImPlotDummyFlags_) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<ImPlotDummyFlags_> for ImPlotDummyFlags_ {
+    type Output = Self;
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        ImPlotDummyFlags_(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for ImPlotDummyFlags_ {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: ImPlotDummyFlags_) {
+        self.0 &= rhs.0;
+    }
+}
+#[repr(transparent)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub struct ImPlotDummyFlags_(pub ::std::os::raw::c_uint);
 pub const ImPlotCond__ImPlotCond_None: ImPlotCond_ = 0;
 pub const ImPlotCond__ImPlotCond_Always: ImPlotCond_ = 1;
 pub const ImPlotCond__ImPlotCond_Once: ImPlotCond_ = 2;
