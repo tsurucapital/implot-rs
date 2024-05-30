@@ -126,6 +126,8 @@ pub struct Plot {
     /// Label of an axis. Stored as CString because that's what we'll use
     /// afterwards, and this ensures the CString itself will stay alive long enough for the plot.
     labels: [Option<CString>; NUMBER_OF_AXES],
+    /// Enable the axis
+    axis_enabled: [bool; NUMBER_OF_AXES],
     /// Axis limits, if present
     axis_limits: [Option<AxisLimitSpecification>; NUMBER_OF_AXES],
     /// Positions for custom axis ticks, if any
@@ -165,12 +167,17 @@ impl Plot {
         const POS_NONE: Option<Vec<f64>> = None;
         const TICK_NONE: Option<Vec<CString>> = None;
 
+        let mut axis_enabled = [false; NUMBER_OF_AXES];
+        axis_enabled[AxisChoice::X1 as usize] = true;
+        axis_enabled[AxisChoice::Y1 as usize] = true;
+
         // TODO(4bb4) question these defaults, maybe remove some of them
         Self {
             title: CString::new(title)
                 .unwrap_or_else(|_| panic!("String contains internal null bytes: {}", title)),
             size: [DEFAULT_PLOT_SIZE_X, DEFAULT_PLOT_SIZE_Y],
             labels: [LABELS_NONE; NUMBER_OF_AXES],
+            axis_enabled,
             axis_limits: [LIMITS_NONE; NUMBER_OF_AXES],
             axis_tick_positions: [POS_NONE; NUMBER_OF_AXES],
             axis_tick_labels: [TICK_NONE; NUMBER_OF_AXES],
@@ -179,6 +186,12 @@ impl Plot {
             plot_flags: PlotFlags::NONE.bits() as sys::ImPlotFlags,
             axis_flags: [AxisFlags::NONE.bits() as sys::ImPlotAxisFlags; NUMBER_OF_AXES],
         }
+    }
+
+    #[inline]
+    pub fn with_axis(mut self, choice: AxisChoice) -> Self {
+        self.axis_enabled[choice as usize] = true;
+        self
     }
 
     /// Sets the plot size, given as [size_x, size_y]. Units are the same as
@@ -195,7 +208,7 @@ impl Plot {
     /// Will panic if the label string contains internal null bytes.
     #[inline]
     pub fn x_label(self, label: &str) -> Self {
-        self.label(label, AxisChoice::X1)
+        self.axis_label(label, AxisChoice::X1)
     }
 
     /// Set the y label of the plot
@@ -204,10 +217,10 @@ impl Plot {
     /// Will panic if the label string contains internal null bytes.
     #[inline]
     pub fn y_label(self, label: &str) -> Self {
-        self.label(label, AxisChoice::Y1)
+        self.axis_label(label, AxisChoice::Y1)
     }
 
-    pub fn label(mut self, label: &str, axis_choice: AxisChoice) -> Self {
+    pub fn axis_label(mut self, label: &str, axis_choice: AxisChoice) -> Self {
         self.labels[axis_choice as usize] = if !label.is_empty() {
             Some(
                 CString::new(label)
@@ -226,7 +239,7 @@ impl Plot {
     /// Note: This conflicts with `linked_y_limits`, whichever is called last on plot construction
     /// takes effect for a given axis.
     #[inline]
-    pub fn limits<L: Into<ImPlotRange>>(
+    pub fn axis_limits<L: Into<ImPlotRange>>(
         mut self,
         limits: L,
         axis_choice: AxisChoice,
@@ -242,21 +255,21 @@ impl Plot {
     /// (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
     pub fn y1_limits<L: Into<ImPlotRange>>(self, limits: L, condition: Condition) -> Self {
-        self.limits(limits, AxisChoice::Y1, condition)
+        self.axis_limits(limits, AxisChoice::Y1, condition)
     }
 
     /// Convenience function to directly set the Y limits for the second Y axis. To
     /// programmatically (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
     pub fn y2_limits<L: Into<ImPlotRange>>(self, limits: L, condition: Condition) -> Self {
-        self.limits(limits, AxisChoice::Y2, condition)
+        self.axis_limits(limits, AxisChoice::Y2, condition)
     }
 
     /// Convenience function to directly set the Y limits for the third Y axis. To programmatically
     /// (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
     pub fn y3_limits<L: Into<ImPlotRange>>(self, limits: L, condition: Condition) -> Self {
-        self.limits(limits, AxisChoice::Y3, condition)
+        self.axis_limits(limits, AxisChoice::Y3, condition)
     }
 
     /// Set linked Y limits of the plot for the given Y axis. Pass clones of the same `Rc` into
@@ -507,7 +520,10 @@ impl Plot {
         };
 
         if should_render {
-            for axis in 0..NUMBER_OF_AXES {
+            for (axis, enabled) in self.axis_enabled.iter().enumerate() {
+                if !enabled {
+                    continue;
+                }
                 let ptr = self.labels[axis]
                     .as_ref()
                     .map_or_else(std::ptr::null, |s| s.as_ptr());

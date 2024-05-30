@@ -1,9 +1,10 @@
-pub use self::{context::*, plot::*};
+pub use self::{context::*, plot::*, plot_elements::*};
 pub use implot_sys as sys;
 pub use sys::{ImPlotPoint, ImPlotRange, ImVec2, ImVec4};
 
 mod context;
 mod plot;
+mod plot_elements;
 
 const NUMBER_OF_AXES: usize = sys::ImAxis__ImAxis_COUNT as usize;
 
