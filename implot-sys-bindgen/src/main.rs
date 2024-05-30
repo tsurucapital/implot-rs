@@ -8,7 +8,11 @@ use std::{env, io::Write, path::PathBuf};
 #[derive(Debug)]
 struct Callbacks;
 
-pub fn to_snake_case(name: &str) -> String {
+fn snake_case(name: &str) -> String {
+    // Take care of exceptions
+    let name = name.replace("NaN", "Nan");
+
+    // SNAKE_CASE
     let mut s = String::new();
     for (i, c) in name.chars().enumerate() {
         if c.is_uppercase() {
@@ -21,15 +25,8 @@ pub fn to_snake_case(name: &str) -> String {
             s.push(c.to_ascii_uppercase());
         }
     }
+
     s
-}
-
-fn convert_camel_case(s: &str) -> String {
-    // Take care of exceptions
-    let s = s.replace("NaN", "Nan");
-
-    // Change case
-    to_snake_case(&s).to_uppercase()
 }
 
 impl bindgen::callbacks::ParseCallbacks for Callbacks {
@@ -40,10 +37,16 @@ impl bindgen::callbacks::ParseCallbacks for Callbacks {
         _variant_value: EnumVariantValue,
     ) -> Option<String> {
         let enum_name = enum_name?;
-        if enum_name.starts_with("ImPlot") && enum_name.ends_with("Flags_") {
-            // Remove everything before `_`
-            let name = original_variant_name.splitn(2, '_').last().unwrap();
-            Some(convert_camel_case(name))
+        if enum_name.starts_with("ImPlot") || enum_name == "ImAxis_" {
+            let name = original_variant_name.split('_').last().unwrap();
+
+            if enum_name.ends_with("Flags_") {
+                // Assume bitfield
+                Some(snake_case(name))
+            } else {
+                // Assume regular enum
+                Some(name.to_string())
+            }
         } else {
             None
         }
@@ -96,6 +99,10 @@ fn main() {
         .blocklist_function("ImPlotAnnotationCollection_AppendV")
         .blocklist_function("ImPlotTagCollection_AppendV")
         .bitfield_enum("ImPlot([a-zA-Z]*)Flags_")
+        .default_enum_style(bindgen::EnumVariation::Rust {
+            non_exhaustive: false,
+        })
+        .rustified_enum("ImPlotCol_")
         // See https://github.com/rust-lang/rust-bindgen/issues/1188
         .blocklist_type("time_t")
         .raw_line("pub type time_t = libc::time_t;")
