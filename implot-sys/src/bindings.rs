@@ -3228,14 +3228,17 @@ pub type ImPlotMarker = ::std::os::raw::c_int;
 pub type ImPlotColormap = ::std::os::raw::c_int;
 pub type ImPlotLocation = ::std::os::raw::c_int;
 pub type ImPlotBin = ::std::os::raw::c_int;
-pub const ImAxis__ImAxis_X1: ImAxis_ = 0;
-pub const ImAxis__ImAxis_X2: ImAxis_ = 1;
-pub const ImAxis__ImAxis_X3: ImAxis_ = 2;
-pub const ImAxis__ImAxis_Y1: ImAxis_ = 3;
-pub const ImAxis__ImAxis_Y2: ImAxis_ = 4;
-pub const ImAxis__ImAxis_Y3: ImAxis_ = 5;
-pub const ImAxis__ImAxis_COUNT: ImAxis_ = 6;
-pub type ImAxis_ = ::std::os::raw::c_uint;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImAxis_ {
+    X1 = 0,
+    X2 = 1,
+    X3 = 2,
+    Y1 = 3,
+    Y2 = 4,
+    Y3 = 5,
+    COUNT = 6,
+}
 impl ImPlotFlags_ {
     pub const NONE: ImPlotFlags_ = ImPlotFlags_(0);
 }
@@ -4250,112 +4253,136 @@ impl ::std::ops::BitAndAssign for ImPlotDummyFlags_ {
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct ImPlotDummyFlags_(pub ::std::os::raw::c_uint);
-pub const ImPlotCond__ImPlotCond_None: ImPlotCond_ = 0;
-pub const ImPlotCond__ImPlotCond_Always: ImPlotCond_ = 1;
-pub const ImPlotCond__ImPlotCond_Once: ImPlotCond_ = 2;
-pub type ImPlotCond_ = ::std::os::raw::c_uint;
-pub const ImPlotCol__ImPlotCol_Line: ImPlotCol_ = 0;
-pub const ImPlotCol__ImPlotCol_Fill: ImPlotCol_ = 1;
-pub const ImPlotCol__ImPlotCol_MarkerOutline: ImPlotCol_ = 2;
-pub const ImPlotCol__ImPlotCol_MarkerFill: ImPlotCol_ = 3;
-pub const ImPlotCol__ImPlotCol_ErrorBar: ImPlotCol_ = 4;
-pub const ImPlotCol__ImPlotCol_FrameBg: ImPlotCol_ = 5;
-pub const ImPlotCol__ImPlotCol_PlotBg: ImPlotCol_ = 6;
-pub const ImPlotCol__ImPlotCol_PlotBorder: ImPlotCol_ = 7;
-pub const ImPlotCol__ImPlotCol_LegendBg: ImPlotCol_ = 8;
-pub const ImPlotCol__ImPlotCol_LegendBorder: ImPlotCol_ = 9;
-pub const ImPlotCol__ImPlotCol_LegendText: ImPlotCol_ = 10;
-pub const ImPlotCol__ImPlotCol_TitleText: ImPlotCol_ = 11;
-pub const ImPlotCol__ImPlotCol_InlayText: ImPlotCol_ = 12;
-pub const ImPlotCol__ImPlotCol_AxisText: ImPlotCol_ = 13;
-pub const ImPlotCol__ImPlotCol_AxisGrid: ImPlotCol_ = 14;
-pub const ImPlotCol__ImPlotCol_AxisTick: ImPlotCol_ = 15;
-pub const ImPlotCol__ImPlotCol_AxisBg: ImPlotCol_ = 16;
-pub const ImPlotCol__ImPlotCol_AxisBgHovered: ImPlotCol_ = 17;
-pub const ImPlotCol__ImPlotCol_AxisBgActive: ImPlotCol_ = 18;
-pub const ImPlotCol__ImPlotCol_Selection: ImPlotCol_ = 19;
-pub const ImPlotCol__ImPlotCol_Crosshairs: ImPlotCol_ = 20;
-pub const ImPlotCol__ImPlotCol_COUNT: ImPlotCol_ = 21;
-pub type ImPlotCol_ = ::std::os::raw::c_uint;
-pub const ImPlotStyleVar__ImPlotStyleVar_LineWeight: ImPlotStyleVar_ = 0;
-pub const ImPlotStyleVar__ImPlotStyleVar_Marker: ImPlotStyleVar_ = 1;
-pub const ImPlotStyleVar__ImPlotStyleVar_MarkerSize: ImPlotStyleVar_ = 2;
-pub const ImPlotStyleVar__ImPlotStyleVar_MarkerWeight: ImPlotStyleVar_ = 3;
-pub const ImPlotStyleVar__ImPlotStyleVar_FillAlpha: ImPlotStyleVar_ = 4;
-pub const ImPlotStyleVar__ImPlotStyleVar_ErrorBarSize: ImPlotStyleVar_ = 5;
-pub const ImPlotStyleVar__ImPlotStyleVar_ErrorBarWeight: ImPlotStyleVar_ = 6;
-pub const ImPlotStyleVar__ImPlotStyleVar_DigitalBitHeight: ImPlotStyleVar_ = 7;
-pub const ImPlotStyleVar__ImPlotStyleVar_DigitalBitGap: ImPlotStyleVar_ = 8;
-pub const ImPlotStyleVar__ImPlotStyleVar_PlotBorderSize: ImPlotStyleVar_ = 9;
-pub const ImPlotStyleVar__ImPlotStyleVar_MinorAlpha: ImPlotStyleVar_ = 10;
-pub const ImPlotStyleVar__ImPlotStyleVar_MajorTickLen: ImPlotStyleVar_ = 11;
-pub const ImPlotStyleVar__ImPlotStyleVar_MinorTickLen: ImPlotStyleVar_ = 12;
-pub const ImPlotStyleVar__ImPlotStyleVar_MajorTickSize: ImPlotStyleVar_ = 13;
-pub const ImPlotStyleVar__ImPlotStyleVar_MinorTickSize: ImPlotStyleVar_ = 14;
-pub const ImPlotStyleVar__ImPlotStyleVar_MajorGridSize: ImPlotStyleVar_ = 15;
-pub const ImPlotStyleVar__ImPlotStyleVar_MinorGridSize: ImPlotStyleVar_ = 16;
-pub const ImPlotStyleVar__ImPlotStyleVar_PlotPadding: ImPlotStyleVar_ = 17;
-pub const ImPlotStyleVar__ImPlotStyleVar_LabelPadding: ImPlotStyleVar_ = 18;
-pub const ImPlotStyleVar__ImPlotStyleVar_LegendPadding: ImPlotStyleVar_ = 19;
-pub const ImPlotStyleVar__ImPlotStyleVar_LegendInnerPadding: ImPlotStyleVar_ = 20;
-pub const ImPlotStyleVar__ImPlotStyleVar_LegendSpacing: ImPlotStyleVar_ = 21;
-pub const ImPlotStyleVar__ImPlotStyleVar_MousePosPadding: ImPlotStyleVar_ = 22;
-pub const ImPlotStyleVar__ImPlotStyleVar_AnnotationPadding: ImPlotStyleVar_ = 23;
-pub const ImPlotStyleVar__ImPlotStyleVar_FitPadding: ImPlotStyleVar_ = 24;
-pub const ImPlotStyleVar__ImPlotStyleVar_PlotDefaultSize: ImPlotStyleVar_ = 25;
-pub const ImPlotStyleVar__ImPlotStyleVar_PlotMinSize: ImPlotStyleVar_ = 26;
-pub const ImPlotStyleVar__ImPlotStyleVar_COUNT: ImPlotStyleVar_ = 27;
-pub type ImPlotStyleVar_ = ::std::os::raw::c_uint;
-pub const ImPlotScale__ImPlotScale_Linear: ImPlotScale_ = 0;
-pub const ImPlotScale__ImPlotScale_Time: ImPlotScale_ = 1;
-pub const ImPlotScale__ImPlotScale_Log10: ImPlotScale_ = 2;
-pub const ImPlotScale__ImPlotScale_SymLog: ImPlotScale_ = 3;
-pub type ImPlotScale_ = ::std::os::raw::c_uint;
-pub const ImPlotMarker__ImPlotMarker_None: ImPlotMarker_ = -1;
-pub const ImPlotMarker__ImPlotMarker_Circle: ImPlotMarker_ = 0;
-pub const ImPlotMarker__ImPlotMarker_Square: ImPlotMarker_ = 1;
-pub const ImPlotMarker__ImPlotMarker_Diamond: ImPlotMarker_ = 2;
-pub const ImPlotMarker__ImPlotMarker_Up: ImPlotMarker_ = 3;
-pub const ImPlotMarker__ImPlotMarker_Down: ImPlotMarker_ = 4;
-pub const ImPlotMarker__ImPlotMarker_Left: ImPlotMarker_ = 5;
-pub const ImPlotMarker__ImPlotMarker_Right: ImPlotMarker_ = 6;
-pub const ImPlotMarker__ImPlotMarker_Cross: ImPlotMarker_ = 7;
-pub const ImPlotMarker__ImPlotMarker_Plus: ImPlotMarker_ = 8;
-pub const ImPlotMarker__ImPlotMarker_Asterisk: ImPlotMarker_ = 9;
-pub const ImPlotMarker__ImPlotMarker_COUNT: ImPlotMarker_ = 10;
-pub type ImPlotMarker_ = ::std::os::raw::c_int;
-pub const ImPlotColormap__ImPlotColormap_Deep: ImPlotColormap_ = 0;
-pub const ImPlotColormap__ImPlotColormap_Dark: ImPlotColormap_ = 1;
-pub const ImPlotColormap__ImPlotColormap_Pastel: ImPlotColormap_ = 2;
-pub const ImPlotColormap__ImPlotColormap_Paired: ImPlotColormap_ = 3;
-pub const ImPlotColormap__ImPlotColormap_Viridis: ImPlotColormap_ = 4;
-pub const ImPlotColormap__ImPlotColormap_Plasma: ImPlotColormap_ = 5;
-pub const ImPlotColormap__ImPlotColormap_Hot: ImPlotColormap_ = 6;
-pub const ImPlotColormap__ImPlotColormap_Cool: ImPlotColormap_ = 7;
-pub const ImPlotColormap__ImPlotColormap_Pink: ImPlotColormap_ = 8;
-pub const ImPlotColormap__ImPlotColormap_Jet: ImPlotColormap_ = 9;
-pub const ImPlotColormap__ImPlotColormap_Twilight: ImPlotColormap_ = 10;
-pub const ImPlotColormap__ImPlotColormap_RdBu: ImPlotColormap_ = 11;
-pub const ImPlotColormap__ImPlotColormap_BrBG: ImPlotColormap_ = 12;
-pub const ImPlotColormap__ImPlotColormap_PiYG: ImPlotColormap_ = 13;
-pub const ImPlotColormap__ImPlotColormap_Spectral: ImPlotColormap_ = 14;
-pub const ImPlotColormap__ImPlotColormap_Greys: ImPlotColormap_ = 15;
-pub type ImPlotColormap_ = ::std::os::raw::c_uint;
-pub const ImPlotLocation__ImPlotLocation_Center: ImPlotLocation_ = 0;
-pub const ImPlotLocation__ImPlotLocation_North: ImPlotLocation_ = 1;
-pub const ImPlotLocation__ImPlotLocation_South: ImPlotLocation_ = 2;
-pub const ImPlotLocation__ImPlotLocation_West: ImPlotLocation_ = 4;
-pub const ImPlotLocation__ImPlotLocation_East: ImPlotLocation_ = 8;
-pub const ImPlotLocation__ImPlotLocation_NorthWest: ImPlotLocation_ = 5;
-pub const ImPlotLocation__ImPlotLocation_NorthEast: ImPlotLocation_ = 9;
-pub const ImPlotLocation__ImPlotLocation_SouthWest: ImPlotLocation_ = 6;
-pub const ImPlotLocation__ImPlotLocation_SouthEast: ImPlotLocation_ = 10;
-pub type ImPlotLocation_ = ::std::os::raw::c_uint;
-pub const ImPlotBin__ImPlotBin_Sqrt: ImPlotBin_ = -1;
-pub const ImPlotBin__ImPlotBin_Sturges: ImPlotBin_ = -2;
-pub const ImPlotBin__ImPlotBin_Rice: ImPlotBin_ = -3;
-pub const ImPlotBin__ImPlotBin_Scott: ImPlotBin_ = -4;
-pub type ImPlotBin_ = ::std::os::raw::c_int;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotCond_ {
+    None = 0,
+    Always = 1,
+    Once = 2,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotCol_ {
+    Line = 0,
+    Fill = 1,
+    MarkerOutline = 2,
+    MarkerFill = 3,
+    ErrorBar = 4,
+    FrameBg = 5,
+    PlotBg = 6,
+    PlotBorder = 7,
+    LegendBg = 8,
+    LegendBorder = 9,
+    LegendText = 10,
+    TitleText = 11,
+    InlayText = 12,
+    AxisText = 13,
+    AxisGrid = 14,
+    AxisTick = 15,
+    AxisBg = 16,
+    AxisBgHovered = 17,
+    AxisBgActive = 18,
+    Selection = 19,
+    Crosshairs = 20,
+    COUNT = 21,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotStyleVar_ {
+    LineWeight = 0,
+    Marker = 1,
+    MarkerSize = 2,
+    MarkerWeight = 3,
+    FillAlpha = 4,
+    ErrorBarSize = 5,
+    ErrorBarWeight = 6,
+    DigitalBitHeight = 7,
+    DigitalBitGap = 8,
+    PlotBorderSize = 9,
+    MinorAlpha = 10,
+    MajorTickLen = 11,
+    MinorTickLen = 12,
+    MajorTickSize = 13,
+    MinorTickSize = 14,
+    MajorGridSize = 15,
+    MinorGridSize = 16,
+    PlotPadding = 17,
+    LabelPadding = 18,
+    LegendPadding = 19,
+    LegendInnerPadding = 20,
+    LegendSpacing = 21,
+    MousePosPadding = 22,
+    AnnotationPadding = 23,
+    FitPadding = 24,
+    PlotDefaultSize = 25,
+    PlotMinSize = 26,
+    COUNT = 27,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotScale_ {
+    Linear = 0,
+    Time = 1,
+    Log10 = 2,
+    SymLog = 3,
+}
+#[repr(i32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotMarker_ {
+    None = -1,
+    Circle = 0,
+    Square = 1,
+    Diamond = 2,
+    Up = 3,
+    Down = 4,
+    Left = 5,
+    Right = 6,
+    Cross = 7,
+    Plus = 8,
+    Asterisk = 9,
+    COUNT = 10,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotColormap_ {
+    Deep = 0,
+    Dark = 1,
+    Pastel = 2,
+    Paired = 3,
+    Viridis = 4,
+    Plasma = 5,
+    Hot = 6,
+    Cool = 7,
+    Pink = 8,
+    Jet = 9,
+    Twilight = 10,
+    RdBu = 11,
+    BrBG = 12,
+    PiYG = 13,
+    Spectral = 14,
+    Greys = 15,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotLocation_ {
+    Center = 0,
+    North = 1,
+    South = 2,
+    West = 4,
+    East = 8,
+    NorthWest = 5,
+    NorthEast = 9,
+    SouthWest = 6,
+    SouthEast = 10,
+}
+#[repr(i32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotBin_ {
+    Sqrt = -1,
+    Sturges = -2,
+    Rice = -3,
+    Scott = -4,
+}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct ImPlotPoint {
@@ -5021,34 +5048,43 @@ pub type ImPlotTransform = ::std::option::Option<
 pub type ImPlotTimeUnit = ::std::os::raw::c_int;
 pub type ImPlotDateFmt = ::std::os::raw::c_int;
 pub type ImPlotTimeFmt = ::std::os::raw::c_int;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Us: ImPlotTimeUnit_ = 0;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Ms: ImPlotTimeUnit_ = 1;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_S: ImPlotTimeUnit_ = 2;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Min: ImPlotTimeUnit_ = 3;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Hr: ImPlotTimeUnit_ = 4;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Day: ImPlotTimeUnit_ = 5;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Mo: ImPlotTimeUnit_ = 6;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_Yr: ImPlotTimeUnit_ = 7;
-pub const ImPlotTimeUnit__ImPlotTimeUnit_COUNT: ImPlotTimeUnit_ = 8;
-pub type ImPlotTimeUnit_ = ::std::os::raw::c_uint;
-pub const ImPlotDateFmt__ImPlotDateFmt_None: ImPlotDateFmt_ = 0;
-pub const ImPlotDateFmt__ImPlotDateFmt_DayMo: ImPlotDateFmt_ = 1;
-pub const ImPlotDateFmt__ImPlotDateFmt_DayMoYr: ImPlotDateFmt_ = 2;
-pub const ImPlotDateFmt__ImPlotDateFmt_MoYr: ImPlotDateFmt_ = 3;
-pub const ImPlotDateFmt__ImPlotDateFmt_Mo: ImPlotDateFmt_ = 4;
-pub const ImPlotDateFmt__ImPlotDateFmt_Yr: ImPlotDateFmt_ = 5;
-pub type ImPlotDateFmt_ = ::std::os::raw::c_uint;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_None: ImPlotTimeFmt_ = 0;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_Us: ImPlotTimeFmt_ = 1;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_SUs: ImPlotTimeFmt_ = 2;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_SMs: ImPlotTimeFmt_ = 3;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_S: ImPlotTimeFmt_ = 4;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_MinSMs: ImPlotTimeFmt_ = 5;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_HrMinSMs: ImPlotTimeFmt_ = 6;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_HrMinS: ImPlotTimeFmt_ = 7;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_HrMin: ImPlotTimeFmt_ = 8;
-pub const ImPlotTimeFmt__ImPlotTimeFmt_Hr: ImPlotTimeFmt_ = 9;
-pub type ImPlotTimeFmt_ = ::std::os::raw::c_uint;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotTimeUnit_ {
+    Us = 0,
+    Ms = 1,
+    S = 2,
+    Min = 3,
+    Hr = 4,
+    Day = 5,
+    Mo = 6,
+    Yr = 7,
+    COUNT = 8,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotDateFmt_ {
+    None = 0,
+    DayMo = 1,
+    DayMoYr = 2,
+    MoYr = 3,
+    Mo = 4,
+    Yr = 5,
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum ImPlotTimeFmt_ {
+    None = 0,
+    Us = 1,
+    SUs = 2,
+    SMs = 3,
+    S = 4,
+    MinSMs = 5,
+    HrMinSMs = 6,
+    HrMinS = 7,
+    HrMin = 8,
+    Hr = 9,
+}
 pub type ImPlotLocator = ::std::option::Option<
     unsafe extern "C" fn(
         ticker: *mut ImPlotTicker,
