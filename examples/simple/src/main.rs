@@ -110,9 +110,9 @@ fn main() {
 
     // Drag rect coordinates
     let mut x1 = 0.0;
-    let mut x2 = 50.0;
+    let mut x2 = 2.0;
     let mut y1 = 0.0;
-    let mut y2 = 50.0;
+    let mut y2 = 2.0;
 
     event_loop
         .run(move |event, window_target| match event {
