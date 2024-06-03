@@ -460,3 +460,47 @@ impl PlotStems {
         }
     }
 }
+
+/// Struct to provide functionality for shaded plots.
+pub struct PlotShaded {
+    /// Label to show in plot
+    label: CString,
+    flags: PlotShadedFlags,
+}
+
+pub type PlotShadedFlags = sys::ImPlotShadedFlags_;
+
+impl PlotShaded {
+    /// Create a new shaded plot to be shown. Does not draw anything by itself, call
+    /// [`PlotShaded::plot`] on the struct for that.
+    pub fn new(label: &str) -> Self {
+        Self {
+            label: CString::new(label)
+                .unwrap_or_else(|_| panic!("Label string has internal null bytes: {}", label)),
+            flags: PlotShadedFlags::NONE,
+        }
+    }
+
+    pub fn with_flags(mut self, flags: PlotShadedFlags) -> Self {
+        self.flags = flags;
+        self
+    }
+
+    pub fn plot(&self, xs: &[f64], ys1: &[f64], ys2: &[f64]) {
+        if xs.is_empty() || ys1.is_empty() || ys2.is_empty() {
+            return;
+        }
+        unsafe {
+            sys::ImPlot_PlotShaded_doublePtrdoublePtrdoublePtr(
+                self.label.as_ptr(),
+                xs.as_ptr(),
+                ys1.as_ptr(),
+                ys2.as_ptr(),
+                xs.len().min(ys1.len()).min(ys2.len()) as i32,
+                self.flags.0 as sys::ImPlotShadedFlags,
+                0,
+                std::mem::size_of::<f64>() as i32,
+            );
+        }
+    }
+}

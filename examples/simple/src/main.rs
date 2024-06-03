@@ -18,7 +18,7 @@ use imgui_winit_support::{
     },
     WinitPlatform,
 };
-use implot::{push_colormap_from_name, PlotLine, PlotLineFlags};
+use implot::{push_colormap_from_name, PlotLine, PlotLineFlags, PlotShaded};
 use raw_window_handle::HasRawWindowHandle;
 
 fn create_window<T: Into<String>>(
@@ -133,6 +133,12 @@ fn main() {
                             PlotLine::new("A line")
                                 .with_flags(PlotLineFlags::SHADED)
                                 .plot(&[0.0, 1.0, 2.0, 3.0], &[0.0, 1.0, 2.0, 4.0]);
+
+                            PlotShaded::new("Shaded").plot(
+                                &[5.0, 6.0, 7.0, 8.0],
+                                &[0.0, 1.0, 0.0, -1.0],
+                                &[1.0, 0.0, -1.0, 0.0],
+                            );
                         });
                 });
                 jet.pop();
