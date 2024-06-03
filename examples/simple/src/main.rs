@@ -131,7 +131,7 @@ fn main() {
                         .x_label("x label")
                         .y_label("y label")
                         .with_axis(implot::AxisChoice::Y2)
-                        .with_y2_axis_scale(&AxisScale::Log10)
+                        .with_axis_scale(AxisChoice::Y2, &AxisScale::Log10)
                         .axis_label("y2 label", implot::AxisChoice::Y2)
                         .build(plot_ui, || {
                             PlotLine::new("A line")

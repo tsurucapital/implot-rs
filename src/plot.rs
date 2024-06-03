@@ -164,10 +164,10 @@ impl Plot {
     }
 
     /// Set the Y limits of the plot for the given Y axis. Call multiple times with different
-    /// `y_axis_choice` values to set for multiple axes, or use the convenience methods such as
+    /// `axis_choice` values to set for multiple axes, or use the convenience methods such as
     /// [`Plot::y1_limits`].
     ///
-    /// Note: This conflicts with `linked_y_limits`, whichever is called last on plot construction
+    /// Note: This conflicts with `linked_axis_limits`, whichever is called last on plot construction
     /// takes effect for a given axis.
     #[inline]
     pub fn axis_limits<L: Into<ImPlotRange>>(
@@ -211,7 +211,7 @@ impl Plot {
     /// Note: This conflicts with `y_limits`, whichever is called last on plot construction takes
     /// effect for a given axis.
     #[inline]
-    pub fn linked_limits(
+    pub fn linked_axis_limits(
         mut self,
         limits: Rc<RefCell<ImPlotRange>>,
         axis_choice: AxisChoice,
@@ -226,7 +226,7 @@ impl Plot {
     /// [`Plot::linked_y_limits`].
     #[inline]
     pub fn linked_y1_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
-        self.linked_limits(limits, AxisChoice::Y1)
+        self.linked_axis_limits(limits, AxisChoice::Y1)
     }
 
     /// Convenience function to directly set linked Y limits for the second Y axis. To
@@ -234,7 +234,7 @@ impl Plot {
     /// [`Plot::linked_y_limits`].
     #[inline]
     pub fn linked_y2_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
-        self.linked_limits(limits, AxisChoice::Y2)
+        self.linked_axis_limits(limits, AxisChoice::Y2)
     }
 
     /// Convenience function to directly set linked Y limits for the third Y axis. To
@@ -242,7 +242,7 @@ impl Plot {
     /// [`Plot::linked_y_limits`].
     #[inline]
     pub fn linked_y3_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
-        self.linked_limits(limits, AxisChoice::Y3)
+        self.linked_axis_limits(limits, AxisChoice::Y3)
     }
 
     /// Set X ticks without labels for the plot. The vector contains one label each in
@@ -321,20 +321,20 @@ impl Plot {
 
     /// Set the plot flags, see the help for `PlotFlags` for what the available flags are
     #[inline]
-    pub fn with_plot_flags(mut self, flags: &PlotFlags) -> Self {
+    pub fn with_flags(mut self, flags: &PlotFlags) -> Self {
         self.plot_flags = flags.0 as sys::ImPlotFlags;
         self
     }
 
     /// Set the axis flags for the X axis in this plot
     #[inline]
-    pub fn with_x1_axis_flags(self, flags: &AxisFlags) -> Self {
+    pub fn with_x1_flags(self, flags: &AxisFlags) -> Self {
         self.with_axis_flags(AxisChoice::X1, flags)
     }
 
     /// Set the axis flags for the selected Y axis in this plot
     #[inline]
-    pub fn with_y1_axis_flags(self, flags: &AxisFlags) -> Self {
+    pub fn with_y1_flags(self, flags: &AxisFlags) -> Self {
         self.with_axis_flags(AxisChoice::Y1, flags)
     }
 
@@ -364,30 +364,6 @@ impl Plot {
         let axis_index = axis_choice as usize;
         self.axis_scales[axis_index] = *scale as sys::ImPlotScale;
         self
-    }
-
-    /// Set the scale for the x1 axis
-    #[inline]
-    pub fn with_x1_axis_scale(self, scale: &AxisScale) -> Self {
-        self.with_axis_scale(AxisChoice::X1, scale)
-    }
-
-    /// Set the scale for the y1 axis
-    #[inline]
-    pub fn with_y1_axis_scale(self, scale: &AxisScale) -> Self {
-        self.with_axis_scale(AxisChoice::Y1, scale)
-    }
-
-    /// Set the scale for the y2 axis
-    #[inline]
-    pub fn with_y2_axis_scale(self, scale: &AxisScale) -> Self {
-        self.with_axis_scale(AxisChoice::Y2, scale)
-    }
-
-    /// Set the scale for the y3 axis
-    #[inline]
-    pub fn with_y3_axis_scale(self, scale: &AxisScale) -> Self {
-        self.with_axis_scale(AxisChoice::Y3, scale)
     }
 
     /// Internal helper function to set axis limits in case they are specified.
