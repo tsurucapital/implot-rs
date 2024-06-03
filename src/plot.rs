@@ -7,7 +7,7 @@
 
 use crate::{AxisChoice, Context, PlotLegendFlags, PlotLocation, PlotUi, NUMBER_OF_AXES};
 pub use imgui::Condition;
-use implot_sys::{self as sys, ImAxis, ImPlotFlags, ImPlotLocation};
+use implot_sys::{self as sys, ImAxis, ImPlotFlags, ImPlotLocation, ImPlotPoint, ImVec4};
 use std::ffi::CString;
 use std::os::raw::c_char;
 use std::{cell::RefCell, rc::Rc};
@@ -19,12 +19,13 @@ const DEFAULT_PLOT_SIZE_Y: f32 = 400.0;
 pub type PlotFlags = sys::ImPlotFlags_;
 pub type AxisFlags = sys::ImPlotAxisFlags_;
 pub type AxisScale = sys::ImPlotScale_;
+pub type PlotCond = sys::ImPlotCond_;
 
 /// Internally-used struct for storing axis limits
 #[derive(Clone)]
 enum AxisLimitSpecification {
     /// Direct limits, specified as values
-    Single(ImPlotRange, Condition),
+    Single(ImPlotRange, PlotCond),
     /// Limits that are linked to limits of other plots (via clones of the same Rc)
     Linked(Rc<RefCell<ImPlotRange>>),
 }
@@ -174,7 +175,7 @@ impl Plot {
         mut self,
         limits: L,
         axis_choice: AxisChoice,
-        condition: Condition,
+        condition: PlotCond,
     ) -> Self {
         let axis_index = axis_choice as usize;
         self.axis_limits[axis_index] =
@@ -185,21 +186,21 @@ impl Plot {
     /// Convenience function to directly set the Y limits for the first Y axis. To programmatically
     /// (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
-    pub fn y1_limits<L: Into<ImPlotRange>>(self, limits: L, condition: Condition) -> Self {
+    pub fn y1_limits<L: Into<ImPlotRange>>(self, limits: L, condition: PlotCond) -> Self {
         self.axis_limits(limits, AxisChoice::Y1, condition)
     }
 
     /// Convenience function to directly set the Y limits for the second Y axis. To
     /// programmatically (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
-    pub fn y2_limits<L: Into<ImPlotRange>>(self, limits: L, condition: Condition) -> Self {
+    pub fn y2_limits<L: Into<ImPlotRange>>(self, limits: L, condition: PlotCond) -> Self {
         self.axis_limits(limits, AxisChoice::Y2, condition)
     }
 
     /// Convenience function to directly set the Y limits for the third Y axis. To programmatically
     /// (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
-    pub fn y3_limits<L: Into<ImPlotRange>>(self, limits: L, condition: Condition) -> Self {
+    pub fn y3_limits<L: Into<ImPlotRange>>(self, limits: L, condition: PlotCond) -> Self {
         self.axis_limits(limits, AxisChoice::Y3, condition)
     }
 
@@ -384,7 +385,7 @@ impl Plot {
                         axis_index as ImAxis,
                         limits.Min,
                         limits.Max,
-                        *condition as sys::ImGuiCond,
+                        *condition as sys::ImPlotCond,
                     );
                 },
                 AxisLimitSpecification::Linked(range) => {
@@ -505,9 +506,9 @@ impl Plot {
     /// false - TODO(4bb4) figure out if this is if things are not rendered
     #[rustversion::attr(since(1.48), doc(alias = "BeginPlot"))]
     #[rustversion::attr(since(1.48), doc(alias = "EndPlot"))]
-    pub fn build<F: FnOnce()>(self, plot_ui: &PlotUi, f: F) {
+    pub fn build<F: FnOnce(&PlotToken)>(self, plot_ui: &PlotUi, f: F) {
         if let Some(token) = self.begin(plot_ui) {
-            f();
+            f(&token);
             token.end()
         }
     }
@@ -520,12 +521,190 @@ pub struct PlotToken {
     plot_title: CString,
 }
 
+pub type PlotDragToolFlags = sys::ImPlotDragToolFlags_;
+
 impl PlotToken {
     /// End a previously begin()'ed plot.
     #[rustversion::attr(since(1.48), doc(alias = "EndPlot"))]
     pub fn end(mut self) {
         self.context = std::ptr::null();
         unsafe { sys::ImPlot_EndPlot() };
+    }
+
+    // --- Miscellaneous -----------------------------------------------------------------------------
+    /// Returns true if the plot area in the current or most recent plot is hovered.
+    #[rustversion::attr(since(1.48), doc(alias = "IsPlotHovered"))]
+    pub fn is_plot_hovered(&self) -> bool {
+        unsafe { sys::ImPlot_IsPlotHovered() }
+    }
+
+    /// Returns true if the user changed the coordinates.
+    #[rustversion::attr(since(1.48), doc(alias = "DragRect"))]
+    #[allow(clippy::too_many_arguments)]
+    pub fn drag_rect(
+        &self,
+        id: i32,
+        x1: &mut f64,
+        y1: &mut f64,
+        x2: &mut f64,
+        y2: &mut f64,
+        color: ImVec4,
+        flags: PlotDragToolFlags,
+        clicked: &mut bool,
+        hovered: &mut bool,
+        held: &mut bool,
+    ) -> bool {
+        unsafe {
+            sys::ImPlot_DragRect(
+                id,
+                x1,
+                y1,
+                x2,
+                y2,
+                color,
+                flags.0 as sys::ImPlotDragToolFlags,
+                clicked,
+                hovered,
+                held,
+            )
+        }
+    }
+
+    /// Set the axis to be used for any upcoming plot elements
+    #[rustversion::attr(since(1.48), doc(alias = "SetAxis"))]
+    pub fn set_axis(&self, axis_choice: AxisChoice) {
+        unsafe {
+            sys::ImPlot_SetAxis(axis_choice as sys::ImAxis);
+        }
+    }
+
+    /// Convert pixels, given as an `ImVec2`, to a position in the current plot's coordinate system.
+    #[rustversion::attr(since(1.48), doc(alias = "PixelsToPlot"))]
+    pub fn pixels_to_plot_vec2(
+        &self,
+        pixel_position: &ImVec2,
+        x_axis: AxisChoice,
+        y_axis: AxisChoice,
+    ) -> ImPlotPoint {
+        let mut point = ImPlotPoint { x: 0.0, y: 0.0 }; // doesn't seem to have default()
+        unsafe {
+            sys::ImPlot_PixelsToPlot_Vec2(
+                &mut point as *mut ImPlotPoint,
+                *pixel_position,
+                x_axis as sys::ImAxis,
+                y_axis as sys::ImAxis,
+            );
+        }
+        point
+    }
+
+    /// Convert pixels, given as floats `x` and `y`, to a position in the current plot's coordinate
+    /// system.
+    #[rustversion::attr(since(1.48), doc(alias = "PixelsToPlot"))]
+    pub fn pixels_to_plot_f32(
+        &self,
+        pixel_position_x: f32,
+        pixel_position_y: f32,
+        x_axis: AxisChoice,
+        y_axis: AxisChoice,
+    ) -> ImPlotPoint {
+        let mut point = ImPlotPoint { x: 0.0, y: 0.0 }; // doesn't seem to have default()
+        unsafe {
+            sys::ImPlot_PixelsToPlot_Float(
+                &mut point as *mut ImPlotPoint,
+                pixel_position_x,
+                pixel_position_y,
+                x_axis as sys::ImAxis,
+                y_axis as sys::ImAxis,
+            );
+        }
+        point
+    }
+
+    /// Convert a position in the current plot's coordinate system to pixels.
+    #[rustversion::attr(since(1.48), doc(alias = "PlotToPixels"))]
+    pub fn plot_to_pixels_vec2(
+        &self,
+        plot_position: &ImPlotPoint,
+        x_axis: AxisChoice,
+        y_axis: AxisChoice,
+    ) -> ImVec2 {
+        let mut pixel_position = ImVec2 { x: 0.0, y: 0.0 }; // doesn't seem to have default()
+        unsafe {
+            sys::ImPlot_PlotToPixels_PlotPoInt(
+                &mut pixel_position as *mut ImVec2,
+                *plot_position,
+                x_axis as sys::ImAxis,
+                y_axis as sys::ImAxis,
+            );
+        }
+        pixel_position
+    }
+
+    /// Convert a position in the current plot's coordinate system to pixels.
+    #[rustversion::attr(since(1.48), doc(alias = "PlotToPixels"))]
+    pub fn plot_to_pixels_f32(
+        &self,
+        plot_position_x: f64,
+        plot_position_y: f64,
+        x_axis: AxisChoice,
+        y_axis: AxisChoice,
+    ) -> ImVec2 {
+        let mut pixel_position = ImVec2 { x: 0.0, y: 0.0 }; // doesn't seem to have default()
+        unsafe {
+            sys::ImPlot_PlotToPixels_double(
+                &mut pixel_position as *mut ImVec2,
+                plot_position_x,
+                plot_position_y,
+                x_axis as sys::ImAxis,
+                y_axis as sys::ImAxis,
+            );
+        }
+        pixel_position
+    }
+
+    /// Returns the current or most recent plot axis range for the specified choice of Y axis.
+    #[rustversion::attr(since(1.48), doc(alias = "GetPlotLimits"))]
+    pub fn get_plot_limits(&self, x_axis: AxisChoice, y_axis: AxisChoice) -> sys::ImPlotRect {
+        // ImPlotLimits doesn't seem to have default()
+        let mut limits = sys::ImPlotRect {
+            X: ImPlotRange { Min: 0.0, Max: 0.0 },
+            Y: ImPlotRange { Min: 0.0, Max: 0.0 },
+        };
+        unsafe {
+            sys::ImPlot_GetPlotLimits(
+                &mut limits as *mut sys::ImPlotRect,
+                x_axis as sys::ImAxis,
+                y_axis as sys::ImAxis,
+            );
+        }
+        limits
+    }
+
+    /// Returns true if the axis plot area in the current plot is hovered.
+    #[rustversion::attr(since(1.48), doc(alias = "IsAxisHovered"))]
+    pub fn is_axis_hovered(&self, axis: AxisChoice) -> bool {
+        unsafe { sys::ImPlot_IsAxisHovered(axis as sys::ImAxis) }
+    }
+
+    /// Returns true if the given item in the legend of the current plot is hovered.
+    pub fn is_legend_entry_hovered(&self, legend_entry: &str) -> bool {
+        unsafe { sys::ImPlot_IsLegendEntryHovered(legend_entry.as_ptr() as *const c_char) }
+    }
+
+    /// Returns the mouse position in x,y coordinates of the current or most recent plot,
+    /// for the specified choice of axes.
+    #[rustversion::attr(since(1.48), doc(alias = "GetPlotMousePos"))]
+    pub fn get_plot_mouse_position(&self, x_axis: AxisChoice, y_axis: AxisChoice) -> ImPlotPoint {
+        let mut point = ImPlotPoint { x: 0.0, y: 0.0 }; // doesn't seem to have default()
+        unsafe {
+            sys::ImPlot_GetPlotMousePos(
+                &mut point as *mut ImPlotPoint,
+                x_axis as sys::ImAxis,
+                y_axis as sys::ImAxis,
+            );
+        }
+        point
     }
 }
 

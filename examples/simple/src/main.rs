@@ -19,8 +19,8 @@ use imgui_winit_support::{
     WinitPlatform,
 };
 use implot::{
-    push_colormap_from_name, set_axis, AxisChoice, AxisScale, PlotBinMethod, PlotHistogram,
-    PlotHistogramFlags, PlotLine, PlotLineFlags, PlotShaded,
+    push_colormap_from_name, AxisChoice, AxisScale, ImVec4, PlotBinMethod, PlotDragToolFlags,
+    PlotHistogram, PlotHistogramFlags, PlotLine, PlotLineFlags, PlotShaded,
 };
 use raw_window_handle::HasRawWindowHandle;
 
@@ -108,6 +108,12 @@ fn main() {
 
     let mut renderer = imgui_glium_renderer::Renderer::init(&mut imgui_context, &display).unwrap();
 
+    // Drag rect coordinates
+    let mut x1 = 0.0;
+    let mut x2 = 50.0;
+    let mut y1 = 0.0;
+    let mut y2 = 50.0;
+
     event_loop
         .run(move |event, window_target| match event {
             Event::NewEvents(_) => {}
@@ -126,6 +132,8 @@ fn main() {
 
                 let jet = push_colormap_from_name("Viridis");
                 ui.window("Test Window").build(|| {
+                    let mut hovered = false;
+
                     let plot_ui = &plot_ctx.get_plot_ui();
                     implot::Plot::new("A plot")
                         .x_label("x label")
@@ -133,12 +141,33 @@ fn main() {
                         .with_axis(implot::AxisChoice::Y2)
                         .with_axis_scale(AxisChoice::Y2, &AxisScale::Log10)
                         .axis_label("y2 label", implot::AxisChoice::Y2)
-                        .build(plot_ui, || {
+                        .build(plot_ui, |plot| {
                             PlotLine::new("A line")
                                 .with_flags(PlotLineFlags::SHADED)
                                 .plot(&[0.0, 1.0, 2.0, 3.0], &[0.0, 1.0, 2.0, 4.0]);
 
-                            set_axis(AxisChoice::Y2);
+                            let color = ImVec4 {
+                                x: 0.0,
+                                y: 0.0,
+                                z: 0.0,
+                                w: -1.0,
+                            };
+                            let mut clicked = false;
+                            let mut held = false;
+                            plot.drag_rect(
+                                0,
+                                &mut x1,
+                                &mut y1,
+                                &mut x2,
+                                &mut y2,
+                                color,
+                                PlotDragToolFlags::NONE,
+                                &mut clicked,
+                                &mut hovered,
+                                &mut held,
+                            );
+
+                            plot.set_axis(AxisChoice::Y2);
                             PlotShaded::new("Shaded").plot(
                                 &[5.0, 6.0, 7.0, 8.0],
                                 &[1.0, 10.0, 1.0, 0.1],
@@ -146,7 +175,10 @@ fn main() {
                             );
                         });
 
-                    implot::Plot::new("A histogram").build(plot_ui, || {
+                    ui.text(format!("Hovered: {hovered}"));
+                    ui.text(format!("Drag rect: ({x1:.1},{y1:.1}) ({x2:.1},{y2:.1})"));
+
+                    implot::Plot::new("A histogram").build(plot_ui, |_| {
                         PlotHistogram::new("Histogram")
                             .with_flags(PlotHistogramFlags::HORIZONTAL)
                             .plot(
