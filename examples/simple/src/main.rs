@@ -18,7 +18,9 @@ use imgui_winit_support::{
     },
     WinitPlatform,
 };
-use implot::{push_colormap_from_name, PlotLine, PlotLineFlags, PlotShaded};
+use implot::{
+    push_colormap_from_name, set_axis, AxisChoice, AxisScale, PlotLine, PlotLineFlags, PlotShaded,
+};
 use raw_window_handle::HasRawWindowHandle;
 
 fn create_window<T: Into<String>>(
@@ -128,16 +130,18 @@ fn main() {
                         .x_label("x label")
                         .y_label("y label")
                         .with_axis(implot::AxisChoice::Y2)
+                        .with_y2_axis_scale(&AxisScale::Log10)
                         .axis_label("y2 label", implot::AxisChoice::Y2)
                         .build(plot_ui, || {
                             PlotLine::new("A line")
                                 .with_flags(PlotLineFlags::SHADED)
                                 .plot(&[0.0, 1.0, 2.0, 3.0], &[0.0, 1.0, 2.0, 4.0]);
 
+                            set_axis(AxisChoice::Y2);
                             PlotShaded::new("Shaded").plot(
                                 &[5.0, 6.0, 7.0, 8.0],
-                                &[0.0, 1.0, 0.0, -1.0],
-                                &[1.0, 0.0, -1.0, 0.0],
+                                &[1.0, 10.0, 1.0, 0.1],
+                                &[10.0, 1.0, 0.1, 1.0],
                             );
                         });
                 });

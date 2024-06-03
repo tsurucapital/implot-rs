@@ -18,6 +18,7 @@ const DEFAULT_PLOT_SIZE_Y: f32 = 400.0;
 
 pub type PlotFlags = sys::ImPlotFlags_;
 pub type AxisFlags = sys::ImPlotAxisFlags_;
+pub type AxisScale = sys::ImPlotScale_;
 
 /// Internally-used struct for storing axis limits
 #[derive(Clone)]
@@ -66,6 +67,8 @@ pub struct Plot {
     /// convert to null-terminated data anyway, we may as well do that directly instead of cloning
     /// Strings and converting them afterwards.
     axis_tick_labels: [Option<Vec<CString>>; NUMBER_OF_AXES],
+    /// Axis scale (e.g.: linear, log10, ...)
+    axis_scales: [sys::ImPlotScale; NUMBER_OF_AXES],
     /// Whether to also show the default ticks when showing custom ticks or not
     show_axis_default_ticks: [bool; NUMBER_OF_AXES],
     /// Configuration for the legend, if specified. The tuple contains location, orientation
@@ -108,6 +111,7 @@ impl Plot {
             axis_limits: [LIMITS_NONE; NUMBER_OF_AXES],
             axis_tick_positions: [POS_NONE; NUMBER_OF_AXES],
             axis_tick_labels: [TICK_NONE; NUMBER_OF_AXES],
+            axis_scales: [AxisScale::Linear as sys::ImPlotScale; NUMBER_OF_AXES],
             show_axis_default_ticks: [false; NUMBER_OF_AXES],
             legend_configuration: None,
             plot_flags: PlotFlags::NONE.0 as sys::ImPlotFlags,
@@ -354,6 +358,38 @@ impl Plot {
         self
     }
 
+    /// Set the axis scales for the selected axis in this plot
+    #[inline]
+    pub fn with_axis_scale(mut self, axis_choice: AxisChoice, scale: &AxisScale) -> Self {
+        let axis_index = axis_choice as usize;
+        self.axis_scales[axis_index] = *scale as sys::ImPlotScale;
+        self
+    }
+
+    /// Set the scale for the x1 axis
+    #[inline]
+    pub fn with_x1_axis_scale(self, scale: &AxisScale) -> Self {
+        self.with_axis_scale(AxisChoice::X1, scale)
+    }
+
+    /// Set the scale for the y1 axis
+    #[inline]
+    pub fn with_y1_axis_scale(self, scale: &AxisScale) -> Self {
+        self.with_axis_scale(AxisChoice::Y1, scale)
+    }
+
+    /// Set the scale for the y2 axis
+    #[inline]
+    pub fn with_y2_axis_scale(self, scale: &AxisScale) -> Self {
+        self.with_axis_scale(AxisChoice::Y2, scale)
+    }
+
+    /// Set the scale for the y3 axis
+    #[inline]
+    pub fn with_y3_axis_scale(self, scale: &AxisScale) -> Self {
+        self.with_axis_scale(AxisChoice::Y3, scale)
+    }
+
     /// Internal helper function to set axis limits in case they are specified.
     fn maybe_set_axis_limits(&self) {
         // Limit-setting can either happen via direct limits or through linked limits. The version
@@ -456,6 +492,7 @@ impl Plot {
                     .map_or_else(std::ptr::null, |s| s.as_ptr());
                 unsafe {
                     sys::ImPlot_SetupAxis(axis as ImAxis, ptr, self.axis_flags[axis]);
+                    sys::ImPlot_SetupAxisScale_PlotScale(axis as ImAxis, self.axis_scales[axis]);
                 }
             }
 
