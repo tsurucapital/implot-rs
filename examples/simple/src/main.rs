@@ -19,7 +19,8 @@ use imgui_winit_support::{
     WinitPlatform,
 };
 use implot::{
-    push_colormap_from_name, set_axis, AxisChoice, AxisScale, PlotLine, PlotLineFlags, PlotShaded,
+    push_colormap_from_name, set_axis, AxisChoice, AxisScale, PlotBinMethod, PlotHistogram,
+    PlotHistogramFlags, PlotLine, PlotLineFlags, PlotShaded,
 };
 use raw_window_handle::HasRawWindowHandle;
 
@@ -144,6 +145,17 @@ fn main() {
                                 &[10.0, 1.0, 0.1, 1.0],
                             );
                         });
+
+                    implot::Plot::new("A histogram").build(plot_ui, || {
+                        PlotHistogram::new("Histogram")
+                            .with_flags(PlotHistogramFlags::HORIZONTAL)
+                            .plot(
+                                &[0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 3.5, 3.5, 5.5],
+                                implot::PlotBin::Auto(PlotBinMethod::Sturges),
+                                Some(0.3),
+                                None,
+                            );
+                    });
                 });
                 jet.pop();
 

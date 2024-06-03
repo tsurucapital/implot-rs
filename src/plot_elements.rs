@@ -6,6 +6,8 @@
 
 #![allow(clippy::bad_bit_mask)]
 
+use implot_sys::ImPlotRange;
+
 use crate::sys;
 use std::ffi::CString;
 use std::os::raw::c_char;
@@ -500,6 +502,66 @@ impl PlotShaded {
                 self.flags.0 as sys::ImPlotShadedFlags,
                 0,
                 std::mem::size_of::<f64>() as i32,
+            );
+        }
+    }
+}
+
+/// Struct to provide functionality for histogram plots.
+pub struct PlotHistogram {
+    /// Label to show in plot
+    label: CString,
+    flags: PlotHistogramFlags,
+}
+
+pub type PlotHistogramFlags = sys::ImPlotHistogramFlags_;
+pub type PlotBinMethod = sys::ImPlotBin_;
+
+pub enum PlotBin {
+    Auto(PlotBinMethod),
+    Manual(u32),
+}
+
+impl PlotHistogram {
+    /// Create a new shaded plot to be shown. Does not draw anything by itself, call
+    /// [`PlotHistogram::plot`] on the struct for that.
+    pub fn new(label: &str) -> Self {
+        Self {
+            label: CString::new(label)
+                .unwrap_or_else(|_| panic!("Label string has internal null bytes: {}", label)),
+            flags: PlotHistogramFlags::NONE,
+        }
+    }
+
+    pub fn with_flags(mut self, flags: PlotHistogramFlags) -> Self {
+        self.flags = flags;
+        self
+    }
+
+    pub fn plot(
+        &self,
+        values: &[f64],
+        bins: PlotBin,
+        bar_scale: Option<f64>,
+        range: Option<ImPlotRange>,
+    ) {
+        let bar_scale = bar_scale.unwrap_or(1.0);
+        let range = range.unwrap_or(ImPlotRange { Min: 0.0, Max: 0.0 });
+        let bins = match bins {
+            // Auto uses negative integers
+            PlotBin::Auto(auto) => auto as sys::ImPlotBin,
+            // Manual uses positive integers
+            PlotBin::Manual(bins) => bins as sys::ImPlotBin,
+        };
+        unsafe {
+            sys::ImPlot_PlotHistogram_doublePtr(
+                self.label.as_ptr(),
+                values.as_ptr(),
+                values.len() as i32,
+                bins,
+                bar_scale,
+                range,
+                self.flags.0 as sys::ImPlotHistogramFlags,
             );
         }
     }
