@@ -186,6 +186,13 @@ impl Plot {
     /// Convenience function to directly set the Y limits for the first Y axis. To programmatically
     /// (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
     #[inline]
+    pub fn x1_limits<L: Into<ImPlotRange>>(self, limits: L, condition: PlotCond) -> Self {
+        self.axis_limits(limits, AxisChoice::X1, condition)
+    }
+
+    /// Convenience function to directly set the Y limits for the first Y axis. To programmatically
+    /// (or on demand) decide which axis to set limits for, use [`Plot::y_limits`]
+    #[inline]
     pub fn y1_limits<L: Into<ImPlotRange>>(self, limits: L, condition: PlotCond) -> Self {
         self.axis_limits(limits, AxisChoice::Y1, condition)
     }
