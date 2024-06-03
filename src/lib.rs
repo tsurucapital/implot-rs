@@ -37,21 +37,42 @@ pub type PlotLocation = sys::ImPlotLocation_;
 /// Used to hide/show legends, shoe them horizontally, etc.
 pub type PlotLegendFlags = sys::ImPlotLegendFlags_;
 
+/// Tracks a change pushed to the colormap stack
+pub struct ColormapToken {
+    /// Whether this token has been popped or not.
+    was_popped: bool,
+}
+
+impl ColormapToken {
+    #[rustversion::attr(since(1.48), doc(alias = "PopColormap"))]
+    pub fn pop(mut self) {
+        if self.was_popped {
+            panic!("Attempted to pop a colormap token twice.")
+        }
+        self.was_popped = true;
+        unsafe {
+            sys::ImPlot_PopColormap(1);
+        }
+    }
+}
+
 /// Switch to one of the built-in preset colormaps.
 #[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
-pub fn push_colormap_from_preset(preset: Colormap) {
+pub fn push_colormap_from_preset(preset: Colormap) -> ColormapToken {
     unsafe {
         sys::ImPlot_PushColormap_PlotColormap(preset as sys::ImPlotColormap);
     }
+    ColormapToken { was_popped: false }
 }
 
 /// Switch to a colormap by name.
 #[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
-pub fn push_colormap_from_name(name: &str) {
+pub fn push_colormap_from_name(name: &str) -> ColormapToken {
     let name = CString::new(name).unwrap();
     unsafe {
         sys::ImPlot_PushColormap_Str(name.as_ptr());
     }
+    ColormapToken { was_popped: false }
 }
 
 /// Set a custom colormap in the form of a vector of colors.

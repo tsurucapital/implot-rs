@@ -18,7 +18,7 @@ use imgui_winit_support::{
     },
     WinitPlatform,
 };
-use implot::{PlotLine, PlotLineFlags};
+use implot::{push_colormap_from_name, PlotLine, PlotLineFlags};
 use raw_window_handle::HasRawWindowHandle;
 
 fn create_window<T: Into<String>>(
@@ -121,6 +121,7 @@ fn main() {
                 // Create frame
                 let ui = imgui_context.frame();
 
+                let jet = push_colormap_from_name("Viridis");
                 ui.window("Test Window").build(|| {
                     let plot_ui = &plot_ctx.get_plot_ui();
                     implot::Plot::new("A plot")
@@ -134,6 +135,7 @@ fn main() {
                                 .plot(&[0.0, 1.0, 2.0, 3.0], &[0.0, 1.0, 2.0, 4.0]);
                         });
                 });
+                jet.pop();
 
                 // Setup drawing
                 let mut target = display.draw();
