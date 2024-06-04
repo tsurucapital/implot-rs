@@ -380,6 +380,7 @@ impl Plot {
     #[inline]
     pub fn with_axis_flags(mut self, axis_choice: AxisChoice, flags: &AxisFlags) -> Self {
         let axis_index = axis_choice as usize;
+        self.axis_enabled[axis_index] = true;
         self.axis_flags[axis_index] = flags.0 as sys::ImPlotAxisFlags;
         self
     }
@@ -416,6 +417,7 @@ impl Plot {
     #[inline]
     pub fn with_axis_scale(mut self, axis_choice: AxisChoice, scale: &AxisScale) -> Self {
         let axis_index = axis_choice as usize;
+        self.axis_enabled[axis_index] = true;
         self.axis_scales[axis_index] = *scale as sys::ImPlotScale;
         self
     }
