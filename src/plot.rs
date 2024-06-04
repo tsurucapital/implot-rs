@@ -17,6 +17,12 @@ const DEFAULT_PLOT_SIZE_X: f32 = 400.0;
 const DEFAULT_PLOT_SIZE_Y: f32 = 400.0;
 pub(crate) const IMPLOT_AUTO: i32 = -1;
 pub(crate) const IMVEC2_ZERO: ImVec2 = ImVec2 { x: 0.0, y: 0.0 };
+pub(crate) const IMPLOT_AUTO_COL: ImVec4 = ImVec4 {
+    x: 0.0,
+    y: 0.0,
+    z: 0.0,
+    w: -1.0,
+};
 
 pub type PlotFlags = sys::ImPlotFlags_;
 pub type AxisFlags = sys::ImPlotAxisFlags_;
@@ -761,6 +767,19 @@ impl PlotToken {
             sys::ImPlot_GetPlotMousePos(&mut point as *mut ImPlotPoint, x_axis, y_axis);
         }
         point
+    }
+
+    pub fn annotation<S: Into<Vec<u8>>>(
+        x: f64,
+        y: f64,
+        color: Option<ImVec4>,
+        pix_offset: ImVec2,
+        clamp: bool,
+        label: S,
+    ) {
+        let label = CString::new(label).unwrap();
+        let color = color.unwrap_or(IMPLOT_AUTO_COL);
+        unsafe { sys::ImPlot_Annotation_Str(x, y, color, pix_offset, clamp, label.as_ptr()) }
     }
 }
 
