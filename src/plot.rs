@@ -769,7 +769,7 @@ impl PlotToken {
         point
     }
 
-    pub fn hide_next_item(hidden: bool, when: PlotCond) {
+    pub fn hide_next_item(&self, hidden: bool, when: PlotCond) {
         unsafe {
             sys::ImPlot_HideNextItem(hidden, when as sys::ImPlotCond);
         }
