@@ -770,6 +770,7 @@ impl PlotToken {
     }
 
     pub fn annotation<S: Into<Vec<u8>>>(
+        &self,
         x: f64,
         y: f64,
         color: Option<ImVec4>,
