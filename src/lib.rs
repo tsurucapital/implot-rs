@@ -2,7 +2,7 @@ use std::ffi::CString;
 
 pub use self::{context::*, plot::*, plot_elements::*};
 pub use implot_sys as sys;
-pub use sys::{ImPlotPoint, ImPlotRange, ImPlotRect, ImVec2, ImVec4};
+pub use sys::{ImPlotColormap, ImPlotPoint, ImPlotRange, ImPlotRect, ImVec2, ImVec4};
 
 mod context;
 mod plot;
@@ -76,8 +76,8 @@ pub fn push_colormap_from_name(name: &str) -> ColormapToken {
 }
 
 /// Set a custom colormap in the form of a vector of colors.
-#[rustversion::attr(since(1.48), doc(alias = "SetColormap"))]
-pub fn add_colormap_from_vec(name: &str, colors: Vec<ImVec4>, discrete: bool) {
+#[rustversion::attr(since(1.48), doc(alias = "AddColormap"))]
+pub fn add_colormap_from_vec(name: &str, colors: Vec<ImVec4>, discrete: bool) -> ImPlotColormap {
     let name = CString::new(name).unwrap();
     unsafe {
         sys::ImPlot_AddColormap_Vec4Ptr(
@@ -85,7 +85,7 @@ pub fn add_colormap_from_vec(name: &str, colors: Vec<ImVec4>, discrete: bool) {
             colors.as_ptr(),
             colors.len() as i32,
             discrete,
-        );
+        )
     }
 }
 
