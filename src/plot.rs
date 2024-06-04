@@ -381,7 +381,23 @@ impl Plot {
         self
     }
 
-    /// Set the axis scales for the selected axis in this plot
+    /// Set the axis scale for x1 in this plot
+    #[inline]
+    pub fn with_x1_scale(mut self, scale: &AxisScale) -> Self {
+        let axis_index = AxisChoice::X1 as usize;
+        self.axis_scales[axis_index] = *scale as sys::ImPlotScale;
+        self
+    }
+
+    /// Set the axis scale for y1 in this plot
+    #[inline]
+    pub fn with_y1_scale(mut self, scale: &AxisScale) -> Self {
+        let axis_index = AxisChoice::Y1 as usize;
+        self.axis_scales[axis_index] = *scale as sys::ImPlotScale;
+        self
+    }
+
+    /// Set the axis scale for the selected axis in this plot
     #[inline]
     pub fn with_axis_scale(mut self, axis_choice: AxisChoice, scale: &AxisScale) -> Self {
         let axis_index = axis_choice as usize;
