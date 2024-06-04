@@ -123,7 +123,7 @@ fn main() {
     // Finally we write the bindings to a file.
     let out_path = sys_crate_path.join("src");
     let mut out_file =
-        std::fs::File::create(&out_path.join("bindings.rs")).expect("Could not open bindings file");
+        std::fs::File::create(out_path.join("bindings.rs")).expect("Could not open bindings file");
     out_file
         .write_all(&bindings_string.into_bytes()[..])
         .expect("Couldn't write bindings");
