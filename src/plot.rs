@@ -769,6 +769,12 @@ impl PlotToken {
         point
     }
 
+    pub fn hide_next_item(hidden: bool, when: PlotCond) {
+        unsafe {
+            sys::ImPlot_HideNextItem(hidden, when as sys::ImPlotCond);
+        }
+    }
+
     pub fn annotation<S: Into<Vec<u8>>>(
         &self,
         x: f64,
