@@ -15,6 +15,7 @@ pub use sys::{ImPlotRange, ImVec2};
 
 const DEFAULT_PLOT_SIZE_X: f32 = 400.0;
 const DEFAULT_PLOT_SIZE_Y: f32 = 400.0;
+const IMPLOT_AUTO: i32 = -1;
 
 pub type PlotFlags = sys::ImPlotFlags_;
 pub type AxisFlags = sys::ImPlotAxisFlags_;
@@ -684,9 +685,16 @@ impl PlotToken {
         pixel_position
     }
 
-    /// Returns the current or most recent plot axis range for the specified choice of Y axis.
+    /// Returns the current or most recent plot axis range for the specified choice of axes.
     #[rustversion::attr(since(1.48), doc(alias = "GetPlotLimits"))]
-    pub fn get_plot_limits(&self, x_axis: AxisChoice, y_axis: AxisChoice) -> sys::ImPlotRect {
+    pub fn get_plot_limits(
+        &self,
+        x_axis: Option<AxisChoice>,
+        y_axis: Option<AxisChoice>,
+    ) -> sys::ImPlotRect {
+        let x_axis = x_axis.map_or_else(|| IMPLOT_AUTO as sys::ImAxis, |x| x as sys::ImAxis);
+        let y_axis = y_axis.map_or_else(|| IMPLOT_AUTO as sys::ImAxis, |y| y as sys::ImAxis);
+
         // ImPlotLimits doesn't seem to have default()
         let mut limits = sys::ImPlotRect {
             X: ImPlotRange { Min: 0.0, Max: 0.0 },
