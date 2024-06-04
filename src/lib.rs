@@ -70,11 +70,20 @@ impl ColormapToken {
     }
 }
 
+/// Switch to a colormap preset.
+#[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
+pub fn push_colormap_from_preset(colormap: ColormapPreset) -> ColormapToken {
+    unsafe {
+        sys::ImPlot_PushColormap_PlotColormap(colormap as sys::ImPlotColormap);
+    }
+    ColormapToken { was_popped: false }
+}
+
 /// Switch to a different colormap.
 #[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
-pub fn push_colormap(preset: Colormap) -> ColormapToken {
+pub fn push_colormap(colormap: Colormap) -> ColormapToken {
     unsafe {
-        sys::ImPlot_PushColormap_PlotColormap(preset.to_index());
+        sys::ImPlot_PushColormap_PlotColormap(colormap.to_index());
     }
     ColormapToken { was_popped: false }
 }
