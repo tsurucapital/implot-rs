@@ -102,16 +102,17 @@ pub fn get_colormap_index(name: &str) -> Option<Colormap> {
 
 /// Set a custom colormap in the form of a vector of colors.
 #[rustversion::attr(since(1.48), doc(alias = "AddColormap"))]
-pub fn add_colormap_from_vec(name: &str, colors: Vec<ImVec4>, discrete: bool) -> ImPlotColormap {
+pub fn add_colormap_from_vec(name: &str, colors: Vec<ImVec4>, discrete: bool) -> Colormap {
     let name = CString::new(name).unwrap();
-    unsafe {
+    let index = unsafe {
         sys::ImPlot_AddColormap_Vec4Ptr(
             name.as_ptr(),
             colors.as_ptr(),
             colors.len() as i32,
             discrete,
         )
-    }
+    };
+    Colormap::Custom(index)
 }
 
 // --- Push/pop utils -------------------------------------------------------------------------
