@@ -15,7 +15,8 @@ pub use sys::{ImPlotRange, ImVec2};
 
 const DEFAULT_PLOT_SIZE_X: f32 = 400.0;
 const DEFAULT_PLOT_SIZE_Y: f32 = 400.0;
-const IMPLOT_AUTO: i32 = -1;
+pub(crate) const IMPLOT_AUTO: i32 = -1;
+pub(crate) const IMVEC2_ZERO: ImVec2 = ImVec2 { x: 0.0, y: 0.0 };
 
 pub type PlotFlags = sys::ImPlotFlags_;
 pub type AxisFlags = sys::ImPlotAxisFlags_;

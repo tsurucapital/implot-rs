@@ -6,9 +6,9 @@
 
 #![allow(clippy::bad_bit_mask)]
 
-use implot_sys::ImPlotRange;
+use implot_sys::{ImPlotRange, ImVec2};
 
-use crate::sys;
+use crate::{sys, Colormap, IMPLOT_AUTO, IMVEC2_ZERO};
 use std::ffi::CString;
 use std::os::raw::c_char;
 
@@ -563,6 +563,62 @@ impl PlotHistogram {
                 range,
                 self.flags.0 as sys::ImPlotHistogramFlags,
             );
+        }
+    }
+}
+
+/// Struct to provide functionality for colormap plots.
+pub struct PlotColormap {
+    /// Label to show in plot
+    label: CString,
+    scale_flags: PlotColormapScaleFlags,
+    fmt: CString,
+}
+
+pub type PlotColormapScaleFlags = sys::ImPlotColormapScaleFlags_;
+
+impl PlotColormap {
+    /// Create a new colormap plot to be shown. Does not draw anything by itself, call
+    /// [`PlotColormap::plot`] on the struct for that.
+    pub fn new(label: &str) -> Self {
+        Self {
+            label: CString::new(label)
+                .unwrap_or_else(|_| panic!("Label string has internal null bytes: {}", label)),
+            scale_flags: PlotColormapScaleFlags::NONE,
+            fmt: CString::new("%g").unwrap(),
+        }
+    }
+
+    pub fn with_scale_flags(mut self, flags: PlotColormapScaleFlags) -> Self {
+        self.scale_flags = flags;
+        self
+    }
+
+    pub fn with_format(mut self, fmt: &str) -> Self {
+        self.fmt = CString::new(fmt)
+            .unwrap_or_else(|_| panic!("Format string has internal null bytes: {}", fmt));
+        self
+    }
+
+    pub fn plot(
+        &self,
+        scale_min: f64,
+        scale_max: f64,
+        size: Option<ImVec2>,
+        colormap: Option<Colormap>,
+    ) {
+        let cmap = colormap.map_or_else(|| IMPLOT_AUTO as sys::ImPlotColormap, |cm| cm.to_index());
+        let size = size.unwrap_or(IMVEC2_ZERO);
+        unsafe {
+            sys::ImPlot_ColormapScale(
+                self.label.as_ptr(),
+                scale_min,
+                scale_max,
+                size,
+                self.fmt.as_ptr(),
+                self.scale_flags.0 as sys::ImPlotColormapScaleFlags,
+                cmap,
+            )
         }
     }
 }
