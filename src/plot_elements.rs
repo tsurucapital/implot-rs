@@ -9,6 +9,7 @@
 use implot_sys::{ImPlotRange, ImVec2};
 
 use crate::{sys, Colormap, IMPLOT_AUTO, IMVEC2_ZERO};
+use std::borrow::Cow;
 use std::ffi::CString;
 use std::os::raw::c_char;
 
@@ -567,12 +568,80 @@ impl PlotHistogram {
     }
 }
 
+/// Struct to provide functionality for pie charts.
+pub struct PlotPieChart {
+    label_fmt: Option<CString>,
+    flags: PlotPieChartFlags,
+}
+
+pub type PlotPieChartFlags = sys::ImPlotPieChartFlags_;
+
+impl PlotPieChart {
+    /// Create a new pie chart plot to be shown. Does not draw anything by itself, call
+    /// [`PlotPieChart::plot`] on the struct for that.
+    pub fn new() -> Self {
+        Self {
+            label_fmt: None, //CString::new("%.1f").unwrap(),
+            flags: PlotPieChartFlags::NONE,
+        }
+    }
+
+    pub fn with_flags(mut self, flags: PlotPieChartFlags) -> Self {
+        self.flags = flags;
+        self
+    }
+
+    pub fn with_label_format(mut self, label_fmt: &str) -> Self {
+        self.label_fmt = Some(CString::new(label_fmt).unwrap());
+        self
+    }
+
+    pub fn plot<S: Into<Vec<u8>> + Copy>(
+        &self,
+        labels: &[S],
+        values: &[f64],
+        x: f64,
+        y: f64,
+        radius: f64,
+        angle0: Option<f64>,
+    ) {
+        let labels: Vec<_> = labels.iter().map(|s| CString::new(*s).unwrap()).collect();
+        let labels: Vec<_> = labels.iter().map(|s| s.as_ptr()).collect();
+        let count = labels.len().min(values.len());
+        let fmt = if let Some(fmt) = self.label_fmt.as_ref() {
+            Cow::Borrowed(fmt.as_c_str())
+        } else {
+            Cow::Owned(CString::new("%.1f").unwrap())
+        };
+
+        unsafe {
+            sys::ImPlot_PlotPieChart_doublePtrStr(
+                labels.as_ptr(),
+                values.as_ptr(),
+                count as i32,
+                x,
+                y,
+                radius,
+                fmt.as_ptr(),
+                angle0.unwrap_or(90.0),
+                self.flags.0 as sys::ImPlotPieChartFlags,
+            )
+        }
+    }
+}
+
+impl Default for PlotPieChart {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// Struct to provide functionality for colormap plots.
 pub struct PlotColormap {
     /// Label to show in plot
     label: CString,
     scale_flags: PlotColormapScaleFlags,
-    fmt: CString,
+    fmt: Option<CString>,
 }
 
 pub type PlotColormapScaleFlags = sys::ImPlotColormapScaleFlags_;
@@ -585,7 +654,7 @@ impl PlotColormap {
             label: CString::new(label)
                 .unwrap_or_else(|_| panic!("Label string has internal null bytes: {}", label)),
             scale_flags: PlotColormapScaleFlags::NONE,
-            fmt: CString::new("%g").unwrap(),
+            fmt: None,
         }
     }
 
@@ -595,8 +664,10 @@ impl PlotColormap {
     }
 
     pub fn with_format(mut self, fmt: &str) -> Self {
-        self.fmt = CString::new(fmt)
-            .unwrap_or_else(|_| panic!("Format string has internal null bytes: {}", fmt));
+        self.fmt = Some(
+            CString::new(fmt)
+                .unwrap_or_else(|_| panic!("Format string has internal null bytes: {}", fmt)),
+        );
         self
     }
 
@@ -609,13 +680,19 @@ impl PlotColormap {
     ) {
         let cmap = colormap.map_or_else(|| IMPLOT_AUTO as sys::ImPlotColormap, |cm| cm.to_index());
         let size = size.unwrap_or(IMVEC2_ZERO);
+        let fmt = if let Some(s) = self.fmt.as_ref() {
+            Cow::Borrowed(s)
+        } else {
+            Cow::Owned(CString::new("%g").unwrap())
+        };
+
         unsafe {
             sys::ImPlot_ColormapScale(
                 self.label.as_ptr(),
                 scale_min,
                 scale_max,
                 size,
-                self.fmt.as_ptr(),
+                fmt.as_ptr(),
                 self.scale_flags.0 as sys::ImPlotColormapScaleFlags,
                 cmap,
             )
