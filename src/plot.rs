@@ -245,9 +245,17 @@ impl Plot {
         self
     }
 
+    /// Convenience function to directly set linked X limits for the first X axis. To
+    /// programmatically (or on demand) decide which axis to set limits for, use
+    /// [`Plot::linked_axis_limits`].
+    #[inline]
+    pub fn linked_x1_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
+        self.linked_axis_limits(limits, AxisChoice::X1)
+    }
+
     /// Convenience function to directly set linked Y limits for the first Y axis. To
     /// programmatically (or on demand) decide which axis to set limits for, use
-    /// [`Plot::linked_y_limits`].
+    /// [`Plot::linked_axis_limits`].
     #[inline]
     pub fn linked_y1_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
         self.linked_axis_limits(limits, AxisChoice::Y1)
@@ -255,7 +263,7 @@ impl Plot {
 
     /// Convenience function to directly set linked Y limits for the second Y axis. To
     /// programmatically (or on demand) decide which axis to set limits for, use
-    /// [`Plot::linked_y_limits`].
+    /// [`Plot::linked_axis_limits`].
     #[inline]
     pub fn linked_y2_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
         self.linked_axis_limits(limits, AxisChoice::Y2)
@@ -263,7 +271,7 @@ impl Plot {
 
     /// Convenience function to directly set linked Y limits for the third Y axis. To
     /// programmatically (or on demand) decide which axis to set limits for, use
-    /// [`Plot::linked_y_limits`].
+    /// [`Plot::linked_axis_limits`].
     #[inline]
     pub fn linked_y3_limits(self, limits: Rc<RefCell<ImPlotRange>>) -> Self {
         self.linked_axis_limits(limits, AxisChoice::Y3)
