@@ -749,14 +749,16 @@ impl PlotToken {
     /// Returns the mouse position in x,y coordinates of the current or most recent plot,
     /// for the specified choice of axes.
     #[rustversion::attr(since(1.48), doc(alias = "GetPlotMousePos"))]
-    pub fn get_plot_mouse_position(&self, x_axis: AxisChoice, y_axis: AxisChoice) -> ImPlotPoint {
+    pub fn get_plot_mouse_position(
+        &self,
+        x_axis: Option<AxisChoice>,
+        y_axis: Option<AxisChoice>,
+    ) -> ImPlotPoint {
         let mut point = ImPlotPoint { x: 0.0, y: 0.0 }; // doesn't seem to have default()
+        let x_axis = x_axis.map_or_else(|| IMPLOT_AUTO as sys::ImAxis, |x| x as sys::ImAxis);
+        let y_axis = y_axis.map_or_else(|| IMPLOT_AUTO as sys::ImAxis, |y| y as sys::ImAxis);
         unsafe {
-            sys::ImPlot_GetPlotMousePos(
-                &mut point as *mut ImPlotPoint,
-                x_axis as sys::ImAxis,
-                y_axis as sys::ImAxis,
-            );
+            sys::ImPlot_GetPlotMousePos(&mut point as *mut ImPlotPoint, x_axis, y_axis);
         }
         point
     }
