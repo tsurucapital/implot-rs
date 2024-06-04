@@ -596,16 +596,19 @@ impl PlotPieChart {
         self
     }
 
-    pub fn plot<S: Into<Vec<u8>> + Copy>(
+    pub fn plot(
         &self,
-        labels: &[S],
+        labels: Vec<String>,
         values: &[f64],
         x: f64,
         y: f64,
         radius: f64,
         angle0: Option<f64>,
     ) {
-        let labels: Vec<_> = labels.iter().map(|s| CString::new(*s).unwrap()).collect();
+        let labels: Vec<_> = labels
+            .into_iter()
+            .map(|s| CString::new(s).unwrap())
+            .collect();
         let labels: Vec<_> = labels.iter().map(|s| s.as_ptr()).collect();
         let count = labels.len().min(values.len());
         let fmt = if let Some(fmt) = self.label_fmt.as_ref() {
