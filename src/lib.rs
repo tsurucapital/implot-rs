@@ -26,7 +26,7 @@ pub type Marker = sys::ImPlotMarker_;
 pub type PlotColorElement = sys::ImPlotCol_;
 
 /// Colormap choice.
-pub type Colormap = sys::ImPlotColormap_;
+pub type ColormapPreset = sys::ImPlotColormap_;
 
 /// Style variable choice, as in "which thing will be affected by a style setting".
 pub type StyleVar = sys::ImPlotStyleVar_;
@@ -36,6 +36,20 @@ pub type PlotLocation = sys::ImPlotLocation_;
 
 /// Used to hide/show legends, shoe them horizontally, etc.
 pub type PlotLegendFlags = sys::ImPlotLegendFlags_;
+
+pub enum Colormap {
+    Preset(ColormapPreset),
+    Custom(i32),
+}
+
+impl Colormap {
+    fn to_index(&self) -> sys::ImPlotColormap {
+        match self {
+            Colormap::Preset(preset) => *preset as sys::ImPlotColormap,
+            Colormap::Custom(custom) => *custom as sys::ImPlotColormap,
+        }
+    }
+}
 
 /// Tracks a change pushed to the colormap stack
 pub struct ColormapToken {
@@ -56,11 +70,11 @@ impl ColormapToken {
     }
 }
 
-/// Switch to one of the built-in preset colormaps.
+/// Switch to a different colormap.
 #[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
-pub fn push_colormap_from_preset(preset: Colormap) -> ColormapToken {
+pub fn push_colormap(preset: Colormap) -> ColormapToken {
     unsafe {
-        sys::ImPlot_PushColormap_PlotColormap(preset as sys::ImPlotColormap);
+        sys::ImPlot_PushColormap_PlotColormap(preset.to_index());
     }
     ColormapToken { was_popped: false }
 }
@@ -73,6 +87,17 @@ pub fn push_colormap_from_name(name: &str) -> ColormapToken {
         sys::ImPlot_PushColormap_Str(name.as_ptr());
     }
     ColormapToken { was_popped: false }
+}
+
+/// Get index of the given colormap
+pub fn get_colormap_index(name: &str) -> Option<Colormap> {
+    let name = CString::new(name).unwrap();
+    let index = unsafe { sys::ImPlot_GetColormapIndex(name.as_ptr()) };
+    if index >= 0 {
+        Some(Colormap::Custom(index))
+    } else {
+        None
+    }
 }
 
 /// Set a custom colormap in the form of a vector of colors.
