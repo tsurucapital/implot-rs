@@ -508,6 +508,8 @@ impl Plot {
     /// instead.
     #[rustversion::attr(since(1.48), doc(alias = "BeginPlot"))]
     pub fn begin(&self, plot_ui: &PlotUi) -> Option<PlotToken> {
+        self.maybe_set_axis_limits();
+
         let should_render = unsafe {
             let size_vec: ImVec2 = ImVec2 {
                 x: self.size[0],
@@ -517,7 +519,6 @@ impl Plot {
         };
 
         if should_render {
-            self.maybe_set_axis_limits();
             self.maybe_set_tick_labels();
 
             for (axis, enabled) in self.axis_enabled.iter().enumerate() {
