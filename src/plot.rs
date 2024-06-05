@@ -161,6 +161,7 @@ impl Plot {
     }
 
     pub fn axis_label(mut self, label: &str, axis_choice: AxisChoice) -> Self {
+        self.axis_enabled[axis_choice as usize] = true;
         self.labels[axis_choice as usize] = if !label.is_empty() {
             Some(
                 CString::new(label)
@@ -186,6 +187,7 @@ impl Plot {
         condition: PlotCond,
     ) -> Self {
         let axis_index = axis_choice as usize;
+        self.axis_enabled[axis_index] = true;
         self.axis_limits[axis_index] =
             Some(AxisLimitSpecification::Single(limits.into(), condition));
         self
@@ -247,6 +249,7 @@ impl Plot {
         axis_choice: AxisChoice,
     ) -> Self {
         let axis_index = axis_choice as usize;
+        self.axis_enabled[axis_index] = true;
         self.axis_limits[axis_index] = Some(AxisLimitSpecification::Linked(limits));
         self
     }
@@ -302,6 +305,7 @@ impl Plot {
         show_default: bool,
     ) -> Self {
         let axis_index = axis_choice as usize;
+        self.axis_enabled[axis_index] = true;
         self.axis_tick_positions[axis_index] = Some(ticks.into());
         self.show_axis_default_ticks[axis_index] = show_default;
         self
@@ -343,6 +347,7 @@ impl Plot {
         show_default: bool,
     ) -> Self {
         let axis_index = axis_choice as usize;
+        self.axis_enabled[axis_index] = true;
         self.axis_tick_positions[axis_index] = Some(tick_labels.iter().map(|x| x.0).collect());
         self.axis_tick_labels[axis_index] = Some(
             tick_labels
