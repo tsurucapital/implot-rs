@@ -70,6 +70,12 @@ impl ColormapToken {
     }
 }
 
+impl Drop for ColormapToken {
+    fn drop(&mut self) {
+        assert!(self.was_popped);
+    }
+}
+
 /// Switch to a colormap preset.
 #[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
 pub fn push_colormap_from_preset(colormap: ColormapPreset) -> ColormapToken {
@@ -235,6 +241,12 @@ impl StyleVarToken {
         unsafe {
             sys::ImPlot_PopStyleVar(1);
         }
+    }
+}
+
+impl Drop for StyleVarToken {
+    fn drop(&mut self) {
+        assert!(self.was_popped);
     }
 }
 
