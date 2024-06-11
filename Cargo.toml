@@ -11,11 +11,10 @@ categories = ["gui", "api-bindings"]
 readme = "README.md"
 
 [dependencies]
-implot-sys = { version = "0.7.0", path = "implot-sys" }
-imgui = { version = "0.12.0", features = [ "docking" ] }
+implot-sys = { path = "implot-sys" }
+imgui = { git = "https://github.com/tsurucapital/imgui-rs.git", rev = "83716ca3819d2c20b48533f4354eba663bccf2d3", features = ["docking"] }
 parking_lot = "0.11"
 rustversion = "1.0.4"
-
 
 [workspace]
 members = [ "examples/simple",
