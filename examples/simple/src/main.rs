@@ -9,6 +9,7 @@ use glium::{
     },
     Surface,
 };
+use imgui::ConfigFlags;
 use imgui_winit_support::{
     winit::{
         dpi::LogicalSize,
@@ -86,6 +87,8 @@ fn imgui_init(
 ) -> (WinitPlatform, imgui::Context) {
     let mut imgui_context = imgui::Context::create();
     imgui_context.set_ini_filename(None);
+    let io = imgui_context.io_mut();
+    io.config_flags |= ConfigFlags::DOCKING_ENABLE;
 
     let mut winit_platform = imgui_winit_support::WinitPlatform::init(&mut imgui_context);
 
