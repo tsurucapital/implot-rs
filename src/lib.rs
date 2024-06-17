@@ -183,6 +183,12 @@ impl StyleColorToken {
     }
 }
 
+impl Drop for StyleColorToken {
+    fn drop(&mut self) {
+        assert!(self.was_popped);
+    }
+}
+
 /// Push a f32 style variable to the stack. The returned token is used for removing
 /// the variable from the stack again:
 /// ```no_run
