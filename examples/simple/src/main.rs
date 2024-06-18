@@ -20,7 +20,7 @@ use imgui_winit_support::{
     WinitPlatform,
 };
 use implot::{
-    push_colormap_from_name, AxisChoice, AxisScale, ImVec4, PlotBinMethod, PlotDragToolFlags,
+    AxisChoice, AxisScale, ImVec4, PlotBinMethod, PlotDragToolFlags,
     PlotHistogram, PlotHistogramFlags, PlotLine, PlotLineFlags, PlotShaded,
 };
 use raw_window_handle::HasRawWindowHandle;
@@ -133,11 +133,12 @@ fn main() {
                 // Create frame
                 let ui = imgui_context.frame();
 
-                let jet = push_colormap_from_name("Viridis");
+                let plot_ui = &plot_ctx.get_plot_ui();
+                let _jet = plot_ui.push_colormap_from_name("Viridis");
+
                 ui.window("Test Window").build(|| {
                     let mut hovered = false;
 
-                    let plot_ui = &plot_ctx.get_plot_ui();
                     implot::Plot::new("A plot")
                         .x_label("x label")
                         .y_label("y label")
@@ -192,7 +193,6 @@ fn main() {
                             );
                     });
                 });
-                jet.pop();
 
                 // Setup drawing
                 let mut target = display.draw();
