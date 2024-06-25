@@ -67,6 +67,10 @@ pub struct Plot {
     axis_enabled: [bool; NUMBER_OF_AXES],
     /// Axis limits, if present
     axis_limits: [Option<AxisLimitSpecification>; NUMBER_OF_AXES],
+    /// Axis limits constraints, if present
+    axis_limits_constraints: [Option<(f64, f64)>; NUMBER_OF_AXES],
+    /// Axis zoom constraints, if present
+    axis_zoom_constraints: [Option<(f64, f64)>; NUMBER_OF_AXES],
     /// Positions for custom axis ticks, if any
     axis_tick_positions: [Option<Vec<f64>>; NUMBER_OF_AXES],
     /// Labels for custom axis ticks, if any. I'd prefer to store these together
@@ -103,6 +107,8 @@ impl Plot {
         // Needed for initialization, see https://github.com/rust-lang/rust/issues/49147
         const LABELS_NONE: Option<CString> = None;
         const LIMITS_NONE: Option<AxisLimitSpecification> = None;
+        const LIMITS_CONSTRAINTS_NONE: Option<(f64, f64)> = None;
+        const LIMITS_ZOOM_NONE: Option<(f64, f64)> = None;
         const POS_NONE: Option<Vec<f64>> = None;
         const TICK_NONE: Option<Vec<CString>> = None;
 
@@ -118,6 +124,8 @@ impl Plot {
             labels: [LABELS_NONE; NUMBER_OF_AXES],
             axis_enabled,
             axis_limits: [LIMITS_NONE; NUMBER_OF_AXES],
+            axis_limits_constraints: [LIMITS_CONSTRAINTS_NONE; NUMBER_OF_AXES],
+            axis_zoom_constraints: [LIMITS_ZOOM_NONE; NUMBER_OF_AXES],
             axis_tick_positions: [POS_NONE; NUMBER_OF_AXES],
             axis_tick_labels: [TICK_NONE; NUMBER_OF_AXES],
             axis_scales: [AxisScale::Linear as sys::ImPlotScale; NUMBER_OF_AXES],
@@ -233,6 +241,20 @@ impl Plot {
     #[inline]
     pub fn y3_limits<L: Into<ImPlotRange>>(self, limits: L, condition: PlotCond) -> Self {
         self.axis_limits(limits, AxisChoice::Y3, condition)
+    }
+
+    #[inline]
+    pub fn axis_limits_constraints(mut self, axis: AxisChoice, v_min: f64, v_max: f64) -> Self {
+        let axis_index = axis as usize;
+        self.axis_limits_constraints[axis_index] = Some((v_min, v_max));
+        self
+    }
+
+    #[inline]
+    pub fn axis_zoom_constraints(mut self, axis: AxisChoice, z_min: f64, z_max: f64) -> Self {
+        let axis_index = axis as usize;
+        self.axis_zoom_constraints[axis_index] = Some((z_min, z_max));
+        self
     }
 
     /// Set linked Y limits of the plot for the given Y axis. Pass clones of the same `Rc` into
@@ -531,6 +553,18 @@ impl Plot {
                 unsafe {
                     sys::ImPlot_SetupAxis(axis as ImAxis, ptr, self.axis_flags[axis]);
                     sys::ImPlot_SetupAxisScale_PlotScale(axis as ImAxis, self.axis_scales[axis]);
+                }
+
+                if let Some(minmax) = self.axis_limits_constraints[axis] {
+                    unsafe {
+                        sys::ImPlot_SetupAxisLimitsConstraints(axis as ImAxis, minmax.0, minmax.1);
+                    }
+                }
+
+                if let Some(minmax) = self.axis_zoom_constraints[axis] {
+                    unsafe {
+                        sys::ImPlot_SetupAxisZoomConstraints(axis as ImAxis, minmax.0, minmax.1);
+                    }
                 }
             }
 

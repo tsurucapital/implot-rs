@@ -145,6 +145,7 @@ fn main() {
                         .with_axis(implot::AxisChoice::Y2)
                         .with_axis_scale(AxisChoice::Y2, &AxisScale::Log10)
                         .axis_label("y2 label", implot::AxisChoice::Y2)
+                        .axis_limits_constraints(AxisChoice::X1, 0.0f64, 10.0f64)
                         .build(plot_ui, |plot| {
                             PlotLine::new("A line")
                                 .with_flags(PlotLineFlags::SHADED)
