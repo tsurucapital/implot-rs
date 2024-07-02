@@ -463,7 +463,7 @@ impl Plot {
             match limits {
                 AxisLimitSpecification::Single(limits, condition) => unsafe {
                     // --- Direct limit-setting ---
-                    sys::ImPlot_SetNextAxisLimits(
+                    sys::ImPlot_SetupAxisLimits(
                         axis_index as ImAxis,
                         limits.Min,
                         limits.Max,
@@ -474,7 +474,7 @@ impl Plot {
                     // --- Linked limit-setting ---
                     let mut borrowed = range.borrow_mut();
                     unsafe {
-                        sys::ImPlot_SetNextAxisLinks(
+                        sys::ImPlot_SetupAxisLinks(
                             axis_index as ImAxis,
                             &mut borrowed.Min,
                             &mut borrowed.Max,
@@ -530,8 +530,6 @@ impl Plot {
     /// instead.
     #[rustversion::attr(since(1.48), doc(alias = "BeginPlot"))]
     pub fn begin(&self, plot_ui: &PlotUi) -> Option<PlotToken> {
-        self.maybe_set_axis_limits();
-
         let should_render = unsafe {
             let size_vec: ImVec2 = ImVec2 {
                 x: self.size[0],
@@ -541,8 +539,6 @@ impl Plot {
         };
 
         if should_render {
-            self.maybe_set_tick_labels();
-
             for (axis, enabled) in self.axis_enabled.iter().enumerate() {
                 if !enabled {
                     continue;
@@ -567,6 +563,9 @@ impl Plot {
                     }
                 }
             }
+
+            self.maybe_set_axis_limits();
+            self.maybe_set_tick_labels();
 
             // Configure legend location, if one was set. This has to be called between begin() and
             // end(), but since only the last call to it actually affects the outcome, I'm adding
