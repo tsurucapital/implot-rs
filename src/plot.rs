@@ -557,7 +557,7 @@ impl<'p> Plot<'p> {
         size: c_int,
         user_data: *mut c_void,
     ) -> c_int {
-        let cb: *mut Box<FormatCallback> = user_data as *mut _;
+        let cb = user_data as *mut Box<FormatCallback>;
 
         let s = (*cb)(value);
         let s = s.as_bytes();
@@ -619,7 +619,7 @@ impl<'p> Plot<'p> {
                             sys::ImPlot_SetupAxisFormat_Str(axis as ImAxis, s.as_ptr());
                         },
                         AxisFormat::Callback(f) => {
-                            let user_data: *mut c_void = f.as_ref() as *const _ as *mut _;
+                            let user_data = f.as_ref() as *const _ as *mut c_void;
                             unsafe {
                                 sys::ImPlot_SetupAxisFormat_PlotFormatter(
                                     axis as ImAxis,
