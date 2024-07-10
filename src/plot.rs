@@ -8,7 +8,7 @@
 use crate::{AxisChoice, Context, PlotLegendFlags, PlotLocation, PlotUi, NUMBER_OF_AXES};
 pub use imgui::Condition;
 use implot_sys::{self as sys, ImAxis, ImPlotFlags, ImPlotLocation, ImPlotPoint, ImVec4};
-use std::ffi::CString;
+use std::ffi::{c_int, c_void, CString};
 use std::os::raw::c_char;
 use std::{cell::RefCell, rc::Rc};
 pub use sys::{ImPlotRange, ImVec2};
@@ -38,6 +38,25 @@ enum AxisLimitSpecification {
     Linked(Rc<RefCell<ImPlotRange>>),
 }
 
+type FormatCallback<'p> = dyn FnMut(f64) -> String + 'p;
+
+pub enum AxisFormat<'p> {
+    FormatString(CString),
+    Callback(Box<Box<FormatCallback<'p>>>),
+}
+
+impl<'p, F: FnMut(f64) -> String + 'p> From<F> for AxisFormat<'p> {
+    fn from(cb: F) -> Self {
+        Self::Callback(Box::new(Box::new(cb)))
+    }
+}
+
+impl<'p> From<CString> for AxisFormat<'p> {
+    fn from(fmt: CString) -> Self {
+        Self::FormatString(fmt)
+    }
+}
+
 /// Struct to represent an ImPlot. This is the main construct used to contain all kinds of plots in ImPlot.
 ///
 /// `Plot` is to be used (within an imgui window) with the following pattern:
@@ -54,7 +73,7 @@ enum AxisLimitSpecification {
 /// ```
 /// (If you are coming from the C++ implementation or the C bindings: build() calls both
 /// begin() and end() internally)
-pub struct Plot {
+pub struct Plot<'p> {
     /// Title of the plot, shown on top. Stored as CString because that's what we'll use
     /// afterwards, and this ensures the CString itself will stay alive long enough for the plot.
     title: CString,
@@ -82,6 +101,8 @@ pub struct Plot {
     axis_tick_labels: [Option<Vec<CString>>; NUMBER_OF_AXES],
     /// Axis scale (e.g.: linear, log10, ...)
     axis_scales: [sys::ImPlotScale; NUMBER_OF_AXES],
+    /// Custom axis ticks format
+    axis_format: [Option<AxisFormat<'p>>; NUMBER_OF_AXES],
     /// Whether to also show the default ticks when showing custom ticks or not
     show_axis_default_ticks: [bool; NUMBER_OF_AXES],
     /// Configuration for the legend, if specified. The tuple contains location, orientation
@@ -96,7 +117,7 @@ pub struct Plot {
     axis_flags: [sys::ImPlotAxisFlags; NUMBER_OF_AXES],
 }
 
-impl Plot {
+impl<'p> Plot<'p> {
     /// Create a new plot with some defaults set. Does not draw anything yet.
     /// Note that this uses antialiasing by default, unlike the C++ API. If you are seeing
     /// artifacts or weird rendering, try disabling it.
@@ -111,6 +132,7 @@ impl Plot {
         const LIMITS_ZOOM_NONE: Option<(f64, f64)> = None;
         const POS_NONE: Option<Vec<f64>> = None;
         const TICK_NONE: Option<Vec<CString>> = None;
+        const AXIS_FORMAT_NONE: Option<AxisFormat> = None;
 
         let mut axis_enabled = [false; NUMBER_OF_AXES];
         axis_enabled[AxisChoice::X1 as usize] = true;
@@ -133,6 +155,7 @@ impl Plot {
             legend_configuration: None,
             plot_flags: PlotFlags::NONE.0 as sys::ImPlotFlags,
             axis_flags: [AxisFlags::NONE.0 as sys::ImPlotAxisFlags; NUMBER_OF_AXES],
+            axis_format: [AXIS_FORMAT_NONE; NUMBER_OF_AXES],
         }
     }
 
@@ -254,6 +277,13 @@ impl Plot {
     pub fn axis_zoom_constraints(mut self, axis: AxisChoice, z_min: f64, z_max: f64) -> Self {
         let axis_index = axis as usize;
         self.axis_zoom_constraints[axis_index] = Some((z_min, z_max));
+        self
+    }
+
+    #[inline]
+    pub fn axis_format(mut self, axis: AxisChoice, formatter: impl Into<AxisFormat<'p>>) -> Self {
+        let axis_index = axis as usize;
+        self.axis_format[axis_index] = Some(formatter.into());
         self
     }
 
@@ -521,6 +551,26 @@ impl Plot {
             });
     }
 
+    unsafe extern "C" fn axis_format_callback(
+        value: f64,
+        buff: *mut c_char,
+        size: c_int,
+        user_data: *mut c_void,
+    ) -> c_int {
+        let cb: *mut Box<FormatCallback> = user_data as *mut _;
+
+        let s = (*cb)(value);
+        let s = s.as_bytes();
+
+        let count = std::cmp::min(size.checked_sub(1).unwrap() as usize, s.len());
+        unsafe {
+            std::ptr::copy_nonoverlapping(s.as_ptr(), buff, count);
+            *buff.add(count) = 0;
+        };
+
+        (count + 1) as c_int
+    }
+
     /// Attempt to show the plot. If this returns a token, the plot will actually
     /// be drawn. In this case, use the drawing functionality to draw things on the
     /// plot, and then call `end()` on the token when done with the plot.
@@ -560,6 +610,24 @@ impl Plot {
                 if let Some(minmax) = self.axis_zoom_constraints[axis] {
                     unsafe {
                         sys::ImPlot_SetupAxisZoomConstraints(axis as ImAxis, minmax.0, minmax.1);
+                    }
+                }
+
+                if let Some(fmt) = self.axis_format[axis].as_ref() {
+                    match fmt {
+                        AxisFormat::FormatString(s) => unsafe {
+                            sys::ImPlot_SetupAxisFormat_Str(axis as ImAxis, s.as_ptr());
+                        },
+                        AxisFormat::Callback(f) => {
+                            let user_data: *mut c_void = f.as_ref() as *const _ as *mut _;
+                            unsafe {
+                                sys::ImPlot_SetupAxisFormat_PlotFormatter(
+                                    axis as ImAxis,
+                                    Some(Self::axis_format_callback),
+                                    user_data,
+                                );
+                            }
+                        }
                     }
                 }
             }

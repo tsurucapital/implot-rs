@@ -1,4 +1,7 @@
-use std::num::NonZeroU32;
+use std::{
+    ffi::CString,
+    num::NonZeroU32,
+};
 
 use glium::{
     glutin::{
@@ -20,8 +23,8 @@ use imgui_winit_support::{
     WinitPlatform,
 };
 use implot::{
-    AxisChoice, AxisScale, ImVec4, PlotBinMethod, PlotDragToolFlags,
-    PlotHistogram, PlotHistogramFlags, PlotLine, PlotLineFlags, PlotShaded,
+    AxisChoice, AxisScale, ImVec4, PlotBinMethod, PlotDragToolFlags, PlotHistogram,
+    PlotHistogramFlags, PlotLine, PlotLineFlags, PlotShaded,
 };
 use raw_window_handle::HasRawWindowHandle;
 
@@ -146,6 +149,11 @@ fn main() {
                         .with_axis_scale(AxisChoice::Y2, &AxisScale::Log10)
                         .axis_label("y2 label", implot::AxisChoice::Y2)
                         .axis_limits_constraints(AxisChoice::X1, 0.0f64, 10.0f64)
+                        .axis_format(
+                            AxisChoice::X1,
+                            |v: f64| format!("x={v} {}", window.inner_size().width),
+                        )
+                        .axis_format(AxisChoice::Y1, CString::new("%.3f").unwrap())
                         .build(plot_ui, |plot| {
                             PlotLine::new("A line")
                                 .with_flags(PlotLineFlags::SHADED)
