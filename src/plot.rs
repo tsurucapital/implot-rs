@@ -564,7 +564,7 @@ impl<'p> Plot<'p> {
 
         let count = std::cmp::min(size.checked_sub(1).unwrap() as usize, s.len());
         unsafe {
-            std::ptr::copy_nonoverlapping(s.as_ptr(), buff, count);
+            std::ptr::copy_nonoverlapping(s.as_ptr(), buff as *mut u8, count);
             *buff.add(count) = 0;
         };
 
