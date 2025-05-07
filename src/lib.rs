@@ -15,7 +15,7 @@ pub struct PlotUi<'ui> {
     context: &'ui Context,
 }
 
-impl<'ui> PlotUi<'ui> {
+impl PlotUi<'_> {
     /// Switch to a colormap preset.
     #[rustversion::attr(since(1.48), doc(alias = "PushColormap"))]
     pub fn push_colormap_from_preset(&self, colormap: ColormapPreset) -> ColormapToken {

@@ -51,7 +51,7 @@ impl<'p, F: FnMut(f64) -> String + 'p> From<F> for AxisFormat<'p> {
     }
 }
 
-impl<'p> From<CString> for AxisFormat<'p> {
+impl From<CString> for AxisFormat<'_> {
     fn from(fmt: CString) -> Self {
         Self::FormatString(fmt)
     }
