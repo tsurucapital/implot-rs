@@ -210,7 +210,7 @@ create_token!(
     pub struct ColormapToken<'ui>;
 
     /// Ends a main menu bar
-    drop { sys::ImPlot_PopColormap(1) }
+    drop { unsafe { sys::ImPlot_PopColormap(1) } }
 );
 
 create_token!(
@@ -219,7 +219,7 @@ create_token!(
     pub struct StyleColorToken<'ui>;
 
     /// Ends a main menu bar
-    drop { sys::ImPlot_PopStyleColor(1) }
+    drop { unsafe { sys::ImPlot_PopStyleColor(1) } }
 );
 
 create_token!(
@@ -228,5 +228,5 @@ create_token!(
     pub struct StyleVarToken<'ui>;
 
     /// Ends a main menu bar
-    drop { sys::ImPlot_PopStyleVar(1) }
+    drop { unsafe { sys::ImPlot_PopStyleVar(1) } }
 );

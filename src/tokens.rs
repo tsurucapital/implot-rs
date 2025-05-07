@@ -36,7 +36,7 @@ macro_rules! create_token {
 
         impl Drop for $token_name<'_> {
             fn drop(&mut self) {
-                unsafe { $on_drop }
+                $on_drop
             }
         }
     }
