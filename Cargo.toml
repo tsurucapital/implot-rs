@@ -19,13 +19,9 @@ rustversion = "1.0.4"
 [patch.crates-io]
 imgui = { git = "https://github.com/tsurucapital/imgui-rs.git", rev = "83716ca3819d2c20b48533f4354eba663bccf2d3" }
 imgui-sys = { git = "https://github.com/tsurucapital/imgui-rs.git", rev = "83716ca3819d2c20b48533f4354eba663bccf2d3" }
-imgui-glium-renderer = { git = "https://github.com/tsurucapital/imgui-rs.git", rev = "83716ca3819d2c20b48533f4354eba663bccf2d3" }
-imgui-winit-support = { git = "https://github.com/tsurucapital/imgui-rs.git", rev = "83716ca3819d2c20b48533f4354eba663bccf2d3" }
 
 [workspace]
-members = [ "examples/simple",
-    "implot-sys",
-]
+members = [ "implot-sys" ]
 exclude = [
     "implot-sys-bindgen",
     "implot-examples",
