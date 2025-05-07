@@ -41,7 +41,8 @@ checksum = "1e10e7569f6ca78ef7664d7d651115172d4875c4410c050306bccde856a99a49"
 [[package]]
 name = "imgui"
 version = "0.12.0"
-source = "git+https://github.com/tsurucapital/imgui-rs.git?rev=83716ca3819d2c20b48533f4354eba663bccf2d3#83716ca3819d2c20b48533f4354eba663bccf2d3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8addafa5cecf0515812226e806913814e02ce38d10215778082af5174abe5669"
 dependencies = [
  "bitflags 1.3.2",
  "cfg-if",
@@ -53,7 +54,8 @@ dependencies = [
 [[package]]
 name = "imgui-sys"
 version = "0.12.0"
-source = "git+https://github.com/tsurucapital/imgui-rs.git?rev=83716ca3819d2c20b48533f4354eba663bccf2d3#83716ca3819d2c20b48533f4354eba663bccf2d3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ead193f9f4b60398e8b8f4ab1483e2321640d87aeebdaa3e5f44c55633ccd804"
 dependencies = [
  "cc",
  "cfg-if",
