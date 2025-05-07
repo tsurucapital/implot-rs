@@ -2,10 +2,6 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-// just for linking for tests
-#[cfg(test)]
-use imgui_sys;
-
 use std::ops::Range;
 include!("bindings.rs");
 
