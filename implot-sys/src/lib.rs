@@ -57,17 +57,17 @@ mod tests {
         assert_eq!(im_range.Max, r.end);
 
         let arr = [7.0, 8.0];
-        let im_range: ImPlotRange = arr.clone().into();
+        let im_range: ImPlotRange = arr.into();
         assert_eq!(im_range.Min, arr[0]);
         assert_eq!(im_range.Max, arr[1]);
 
         let tuple = (12.0, 19.0);
-        let im_range: ImPlotRange = tuple.clone().into();
+        let im_range: ImPlotRange = tuple.into();
         assert_eq!(im_range.Min, tuple.0);
         assert_eq!(im_range.Max, tuple.1);
 
         let imvec = imgui_sys::ImVec2::new(33.0, 55.0);
-        let im_range: ImPlotRange = imvec.clone().into();
+        let im_range: ImPlotRange = imvec.into();
         assert_eq!(im_range.Min, imvec.x as f64);
         assert_eq!(im_range.Max, imvec.y as f64);
     }
