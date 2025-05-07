@@ -47,10 +47,11 @@ impl<'ui> PlotUi<'ui> {
     /// Push a f32 style variable to the stack. The returned token is used for removing
     /// the variable from the stack again:
     /// ```no_run
-    /// # use implot::{push_style_var_f32, StyleVar};
-    /// let pushed_var = push_style_var_f32(&StyleVar::LineWeight, 11.0);
+    /// # use implot::{PlotUi, StyleVar};
+    /// # let plot_ui: PlotUi = todo!();
+    /// let pushed_var = plot_ui.push_style_var_f32(&StyleVar::LineWeight, 11.0);
     /// // Plot some things
-    /// pushed_var.pop();
+    /// std::mem::drop(pushed_var);
     /// ```
     #[rustversion::attr(since(1.48), doc(alias = "PushStyleVar"))]
     pub fn push_style_var_f32(&self, element: &StyleVar, value: f32) -> StyleVarToken {
@@ -63,10 +64,11 @@ impl<'ui> PlotUi<'ui> {
     /// Push an u32 style variable to the stack. The only i32 style variable is Marker
     /// at the moment, for that, use something like
     /// ```no_run
-    /// # use implot::{push_style_var_i32, StyleVar, Marker};
-    /// let markerchoice = push_style_var_i32(&StyleVar::Marker, Marker::Cross as i32);
+    /// # use implot::{PlotUi, StyleVar, Marker};
+    /// # let plot_ui: PlotUi = todo!();
+    /// let markerchoice = plot_ui.push_style_var_i32(&StyleVar::Marker, Marker::Cross as i32);
     /// // plot things
-    /// markerchoice.pop()
+    /// std::mem::drop(markerchoice)
     /// ```
     #[rustversion::attr(since(1.48), doc(alias = "PushStyleVar"))]
     pub fn push_style_var_i32(&self, element: &StyleVar, value: i32) -> StyleVarToken {
@@ -92,10 +94,11 @@ impl<'ui> PlotUi<'ui> {
     /// The components should be between 0.0 (no intensity) and 1.0 (full intensity).
     /// The return value is a token that gets used for removing the style color from the stack again:
     /// ```no_run
-    /// # use implot::{push_style_color, PlotColorElement};
-    /// let pushed_var = push_style_color(&PlotColorElement::Line, 1.0, 1.0, 1.0, 0.2);
+    /// # use implot::{PlotUi, PlotColorElement};
+    /// # let plot_ui: PlotUi = todo!();
+    /// let pushed_var = plot_ui.push_style_color(&PlotColorElement::Line, 1.0, 1.0, 1.0, 0.2);
     /// // Plot some things
-    /// pushed_var.pop();
+    /// std::mem::drop(pushed_var);
     /// ```
     #[rustversion::attr(since(1.48), doc(alias = "PushStyleColor"))]
     pub fn push_style_color(

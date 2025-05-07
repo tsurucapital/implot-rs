@@ -66,7 +66,7 @@ impl<'p> From<CString> for AxisFormat<'p> {
 /// let plot_ui = plotting_context.get_plot_ui();
 /// implot::Plot::new("my title")
 ///     .size([300.0, 200.0]) // other things such as .x_label("some_label") can be added too
-///     .build(&plot_ui, || {
+///     .build(&plot_ui, |_| {
 ///         // Do things such as plotting lines
 ///     });
 ///
