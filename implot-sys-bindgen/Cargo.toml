@@ -6,4 +6,4 @@ edition = "2018"
 
 [dependencies]
 bindgen = "0.69.4"
-imgui-sys = { git = "https://github.com/tsurucapital/imgui-rs.git", rev = "83716ca3819d2c20b48533f4354eba663bccf2d3", features = ["docking"] }
+imgui-sys = { version = "0.12.0", features = ["docking"] }
